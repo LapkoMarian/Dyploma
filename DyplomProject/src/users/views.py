@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.conf import settings
 
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
-from .models import User,Profile
+from .models import User, Profile
 
 
 def register(request):

@@ -8,7 +8,7 @@ from classroom.forms import PostForm
 
 
 @login_required
-@permission_required("posts.Can add post", raise_exception=True)
+@permission_required("posts.add_post", raise_exception=True)
 def create_post(request, pk):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)

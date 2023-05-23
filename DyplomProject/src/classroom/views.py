@@ -25,7 +25,7 @@ def home(requests):
 
 
 @login_required
-@permission_required("classroom.Can add classroom", raise_exception=True)
+@permission_required("classroom.add_classroom", raise_exception=True)
 def create_classroom(request):
     if request.method == 'POST':
         print('fORM vaLID')
@@ -36,14 +36,15 @@ def create_classroom(request):
             classroom = Classroom(name=name, description=description, created_by=request.user,
                                   classroom_code=Classroom.generate_code())
             classroom.save()
-            topic = Topic(name = 'General' , classroom = classroom)
+            topic = Topic(name='General', classroom=classroom)
             topic.save()
-            classroom_teachers = ClassroomTeachers(classroom = classroom, teacher=request.user)
+            classroom_teachers = ClassroomTeachers(classroom=classroom, teacher=request.user)
             classroom_teachers.save()
             messages.success(request, f'Classroom {name} created !')
         else:
             messages.danger(request, f'Classroom Could not be created :(')
     return redirect('classroom:home')
+
 
 @login_required
 def join_classroom(request):
@@ -60,6 +61,7 @@ def join_classroom(request):
         else:
             messages.success(request, f'Error adding you to the classroom')
     return redirect('classroom:home')
+
 
 @login_required
 def open_classroom(requests,pk):
@@ -84,13 +86,17 @@ def open_classroom(requests,pk):
 
     return render(requests, 'classroom/classroom.html', context)
 
+
 @login_required
-@permission_required("classroom.Can delete classroom", raise_exception=True)
-def delete_classroom(requests, pk):
-    context = {
-        'title' : 'Classroom',
-    }
-    return render(requests, 'base.html', context)
+@permission_required("classroom.delete_classroom", raise_exception=True)
+def delete_classroom(request, pk):
+    try:
+        classroom = Classroom.objects.get(pk=pk)
+        classroom.delete()
+        messages.success(request, "Клас успішно видалено.")
+    except Classroom.DoesNotExist:
+        messages.error(request, "Клас не знайдено.")
+    return redirect('home')
 
 
 @login_required
@@ -104,7 +110,7 @@ def members(request, pk):
 
 
 @login_required
-@permission_required("assignment.Can add assignment", raise_exception=True)
+@permission_required("posts.add_assignment", raise_exception=True)
 def assignment_create(request):
     if request.method == 'POST':
         form = AssignmentCreateForm(request.user, request.POST, request.FILES)
@@ -164,6 +170,7 @@ def assignment_submit(request, pk):
     }
     return render(request, 'classroom/assignment_submit.html', context)
 
+
 @login_required
 def turnin(request,pk):
     if request.method == 'POST':
@@ -176,6 +183,7 @@ def turnin(request,pk):
         
     return redirect('classroom:assignment_submit', pk)
 
+
 @login_required
 def unsubmit(request,pk):
     if request.method == 'POST':
@@ -185,6 +193,7 @@ def unsubmit(request,pk):
         submitted_assignment.save()
         
     return redirect('classroom:assignment_submit', pk)
+
 
 @login_required
 def unsubmit_file(request, pk):
@@ -198,6 +207,7 @@ def unsubmit_file(request, pk):
                 submitted_assignment.save()
             assignment_file.delete()
         return redirect('classroom:assignment_submit', assignment_pk)
+
 
 @login_required
 def todo(request):
@@ -215,8 +225,6 @@ def todo(request):
     context = {'assignments':filtered_assignment}
     
     return render(request, 'classroom/todo.html', context)
-
-
 
 
 @login_required
@@ -243,9 +251,12 @@ def classwork(request, pk):
     context = {'assignments':assignments}
     return render(request, 'classroom/classwork.html', context)
 
+
+@login_required
 def student_work(request, pk):
     assignment = get_object_or_404(Assignment, pk=pk)
     context = {'assignment': assignment}
     return render(request, 'classroom/student_work.html', context)
+
 
 

@@ -16,6 +16,7 @@ def view_grades(request,pk):
     }
     return render(request, 'assignments/view_grades.html', context)
 
+
 @login_required
 def grade(request,pk):
     submit_assignment = get_object_or_404(SubmittedAssignment, pk=pk)

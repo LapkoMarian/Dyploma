@@ -1,5 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def landing(request):
-    return render(request, "landing_page.html")
+    return redirect('users:login')

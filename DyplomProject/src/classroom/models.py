@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.utils import timezone
-from django import template
 import string
 import random
 
@@ -20,11 +19,16 @@ class Classroom(models.Model):
         letters_and_digits = string.ascii_letters + string.digits
         return ''.join(random.choice(letters_and_digits) for i in range(length))
 
+    # @staticmethod
+    # def members_classroom():
+    #     students = User.objects.filter(groups__name='student')
+    #     teachers = User.objects.filter(groups__name='teacher')
+    #     return students, teachers
+
     def __str__(self):
         return f'{self.name}'
 
 
-# Memebers in this table are only the teachers
 class ClassroomTeachers(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -39,7 +43,10 @@ class Topic(models.Model):
 
     def __str__(self):
         return f'{self.classroom.name} -> {self.name}'
-    
+
+
+
+
 
 
 

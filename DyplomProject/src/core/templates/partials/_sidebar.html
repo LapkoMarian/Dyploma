@@ -6,7 +6,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-book-open"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">DIST-LEARN</div>
+        <div class="sidebar-brand-text mx-3">BOGO-DIST</div>
     </a>
 
     <!-- Divider -->
@@ -16,39 +16,40 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'classroom:home' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Classrooms</span></a>
+            <span>Мої класи</span></a>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'classroom:todo' %}">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>To Do</span>
-        </a>
-    </li>
     {% if request.user.profile.is_teacher %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'classroom:toreview' %}">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>To Review</span>
+            <span>Перевірка завдань</span>
         </a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="{% url 'classroom:assignment_create' %}">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Create Assignment</span></a>
+            <span>Створити завдання</span></a>
     </li>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    {% if 'open' in request.path %}
+<!--    &lt;!&ndash; Nav Item - Pages Collapse Menu &ndash;&gt;-->
+<!--    {% if 'open' in request.path %}-->
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link" href="{% url 'classroom:classwork' classroom.pk %}">-->
+<!--            <i class="fas fa-fw fa-folder"></i>-->
+<!--            <span>Всі завдання класу {{ classroom.name }}</span>-->
+<!--        </a>-->
+<!--    </li>-->
+<!--    {% endif %}-->
+    {% else %}
+    <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'classroom:classwork' classroom.pk %}">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Classworks</span>
+        <a class="nav-link" href="{% url 'classroom:todo' %}">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Завдання для виконання</span>
         </a>
     </li>
-    {% endif %}
     {% endif %}
 
     <!-- Divider -->
@@ -58,7 +59,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'schedule:schedule' %}">
             <i class="far fa-calendar-alt"></i>
-            <span>Schedule</span>
+            <span>Розклад</span>
         </a>
     </li>
 
