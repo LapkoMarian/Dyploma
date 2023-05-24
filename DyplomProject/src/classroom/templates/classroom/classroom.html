@@ -14,23 +14,16 @@
         <div class="card-img-overlay">
             <h1 class="card-title"><b>{{ classroom.name }}</b></h1>
             <p class="card-text">{{ classroom.description }}</p>
-            <input type="text"  value="{{ classroom.classroom_code }}" id="classroom-code">
+            {% if request.user.profile.is_teacher %}
+            <input type="text"  value="{{ classroom.classroom_code }}" id="classroom-code" readonly>
             <button class = "btn btn-sm btn-outline-primary" onclick="copyCode()">Copy</button>
+            {% endif %}
         </div>
         </div>
     </div>
     <div class="col-12">
         <div class="row">
-        <div class="col-lg-3 d-none d-lg-block">
-            <div class="card border">
-            <div class="card-body">
-                <h5>Upcoming</h5>
-                <p class="card-text">Woohoo, no work due soon!</p>
-                <a class="float-right" href="{% url 'classroom:todo' %}">View all</a>
-            </div>
-            </div>
-        </div>
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <!-- ROW -->
                 <div class="row">
 
@@ -38,7 +31,7 @@
                         <div id = "clicked-post" class="card shadow-sm">
                             <div class="card-body">
                                 <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" width="30" height="30" alt="..." class="rounded-circle mr-2 text-none">
-                                <a  class = "text-decoration-none" href="#!">Share something with your class</a>
+                                <a  class = "text-decoration-none" href="#!">Поділіться чимось зі своїм класом</a>
                             </div>
                         </div>
                         <!-- TEXT AREA -->
@@ -93,7 +86,9 @@
                                         {% else %}
                                             <a href="{% url 'classroom:assignment_submit' content.pk %}"><h4 class="text-primary">{{ content.title }}</h4></a>
                                         {% endif %}
-                                        <h6>Posted on {{ content.created_at }} By {{ content.created_by.username }}</h6>
+                                        <h6>Опубліковано {{ content.created_at }} Автор {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
+                                        <hr>
+                                        <h5>{{ content.description }}</h5>
                                     </div>
                                     <!-- End Container -->
                                     <!-- CARD -->
@@ -135,7 +130,7 @@
                                             <div class="input-group">
                                             <img src="{{ request.user.profile.image.url }}" width="35" height="35" alt="..." class="rounded-circle ml-2 mr-2">
                                                 {% csrf_token %}
-                                                {{ comment_form.comment_text|attr:"class:form-control rounded-pill"|attr:"placeholder:Add a class comment" }}
+                                                {{ comment_form.comment_text|attr:"class:form-control rounded-pill"|attr:"placeholder:Додайте коментар" }}
                                                 <div class="input-group-append">
                                                     <button class=" btn btn-circle" type="submit" id="button-addon2"><i class="fas fa-angle-double-right"></i></button>
                                                 </div>

@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -91,7 +92,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk'
+
+LANGUAGES = [
+    ('uk', _('Ukrainian')),
+
+]
 
 TIME_ZONE = 'UTC'
 
@@ -120,12 +126,11 @@ LOGOUT_REDIRECT_URL = 'users:login'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.ukr.net'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USERNAME = 'Bogo Admin'
-EMAIL_HOST_USER = 'distbogor2@gmail.com'
-EMAIL_HOST_PASSWORD = 'Bogordist2'
+EMAIL_HOST_USER = 'bogor2dist@ukr.net'
+EMAIL_HOST_PASSWORD = 'uAlOV3NGq0iIu1E7'
 
 DEFAULT_STUDENT_GROUP = 'student'
 DEFAULT_TEACHER_GROUP = 'teacher'

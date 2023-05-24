@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Classroom, Topic
+from .models import Classroom
 
 
 class ClassroomCreationForm(ModelForm):
@@ -10,7 +10,7 @@ class ClassroomCreationForm(ModelForm):
 
 
 class JoinClassroomForm(forms.Form):
-    code = forms.CharField(label='Enter Code', max_length=100)
+    code = forms.CharField(label='Введіть код', max_length=100)
 
 
 class PostForm(forms.Form):
