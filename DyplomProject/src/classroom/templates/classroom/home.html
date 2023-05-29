@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">Classrooms</h1>
+<h1 class="h3 mb-4 text-gray-800">Мої класи</h1>
 <!-- ROW  -->
 <div class="row">
     <!-- COL -->
@@ -39,7 +39,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Create Class</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Створити клас</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -48,18 +48,18 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="exampleInput">Class Name</label>
-                        {{ classroom_form.name|attr:'class: form-control'|attr:'placeholder:Enter Classname' }}
+                        <label for="exampleInput">Ім'я класу</label>
+                        {{ classroom_form.name|attr:'class: form-control'|attr:"placeholder:Введіть ім'я класу" }}
                     </div>
                     <div class="form-group">
-                        <label for="exam">Description</label>
-                        {{ classroom_form.description|attr:'class: form-control'|attr:'placeholder:Enter Description' }}
+                        <label for="exam">Опис</label>
+                        {{ classroom_form.description|attr:'class: form-control'|attr:'placeholder:Введіть опис' }}
                     </div>
                 </div>
             
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create Classroom</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Створити клас</button>
                 </div>
             </form>
         </div>
@@ -71,7 +71,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Join Class</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Приєднатись до класу</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -81,16 +81,16 @@
                 <div class="modal-body">
                         <div class="form-group">
                         <label for="exampleInput">{{ join_classroom_form.code.label }}</label>
-                        {{ join_classroom_form.code|attr:'class: form-control'|attr:'placeholder:Enter Class Code' }}
-                        <small id="Help" class="form-text text-muted">Ask your teacher for the class code, then enter it here.</small>
+                        {{ join_classroom_form.code|attr:'class: form-control'|attr:'placeholder:Введіть код класу' }}
+                        <small id="Help" class="form-text text-muted">Попросіть у вчителя код класу, а потім введіть його тут.</small>
                         </div>
-                    <ul><h5>To sign in with a class code</h5>
-                        <li>Use an authorized account</li>
-                        <li>Use a class code with 5-7 letters or numbers, and no spaces or symbols</li>
+                    <ul><h5>Щоб увійти за допомогою коду класу</h5>
+                        <li>Використовуйте авторизований обліковий запис</li>
+                        <li>Використовуйте код класу з 5-7 літер або цифр без пробілів або символів</li>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Join Classroom</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-primary">Приєднатись до класу</button>
                     </div>
             </form>
         </div>

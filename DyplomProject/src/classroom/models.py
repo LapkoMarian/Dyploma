@@ -19,12 +19,6 @@ class Classroom(models.Model):
         letters_and_digits = string.ascii_letters + string.digits
         return ''.join(random.choice(letters_and_digits) for i in range(length))
 
-    # @staticmethod
-    # def members_classroom():
-    #     students = User.objects.filter(groups__name='student')
-    #     teachers = User.objects.filter(groups__name='teacher')
-    #     return students, teachers
-
     def __str__(self):
         return f'{self.name}'
 

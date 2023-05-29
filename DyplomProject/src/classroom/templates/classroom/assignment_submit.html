@@ -24,8 +24,8 @@
       </div>
       <p class="text-muted">{{ assignment.created_by.username }} {{ assignment.created_at }}</p>
       <div class="row">
-        <p class="text-dark font-weight-bold">{{ assignment.marks }} points</p>
-        <p class="ml-auto text-dark font-weight-bold">Due {{ assignment.due_date }}</p>
+        <p class="text-dark font-weight-bold">{{ assignment.marks }} балів</p>
+        <p class="ml-auto text-dark font-weight-bold">Потрібно виконати до {{ assignment.due_date }}</p>
       </div>
       <hr>
       <p>{{ assignment.description }}</p>
@@ -55,22 +55,22 @@
       <div class="card p-4 m-3 shadow">
         
         <div class="row">
-          <h4 class="text-primary">Your Work</h4>
+          <h4 class="text-primary">Твоя робота</h4>
               {% if submitted_assignment %}
 
                 {% if submitted_assignment.turned_in %}
                 <p class="ml-auto text-success">
-                    Turned In
+                    Здано
                 </p>  
                       
                 {% else %}
                 <p class="ml-auto text-success">
-                    Assigned
+                    Призначено
                 </p>
                 {% endif %}
               {% else %}
                 <p class="ml-auto text-success">
-                    Assigned
+                    Призначено
                 </p>
               {% endif %}
 
@@ -104,17 +104,17 @@
                   {% csrf_token %}
                   {{ form | crispy }}
                   <button type="submit" class="btn btn-outline-dark btn-block m-1">
-                      <i class="fa fa-plus" aria-hidden="true"></i> Add or create
+                      <i class="fa fa-plus" aria-hidden="true"></i> Здати роботу
                   </button>
                 </form>
                 <form action="{% url 'classroom:turnin' assignment.pk %}" method="POST">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-primary btn-block m-1">Mark as done</button>
+                  <button type="submit" class="btn btn-primary btn-block m-1">Позначити як виконане</button>
                 </form>
             {% else %}
                 <form action="{% url 'classroom:unsubmit' assignment.pk %}" method="POST">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-dark btn-block m-1">Unsubmit</button>
+                  <button type="submit" class="btn btn-outline-dark btn-block m-1">Скасувати надсилання</button>
                 </form>
             {% endif %}
         {% else %}
@@ -122,12 +122,12 @@
                 {% csrf_token %}
                 {{ form | crispy }}
                 <button type="submit" class="btn btn-outline-dark btn-block m-1">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Add or create
+                    <i class="fa fa-plus" aria-hidden="true"></i> Здати роботу
                 </button>
             </form>
             <form action="{% url 'classroom:turnin' assignment.pk %}" method="POST">
               {% csrf_token %}
-              <button type="submit" class="btn btn-primary btn-block m-1">Mark as done</button>
+              <button type="submit" class="btn btn-primary btn-block m-1">Позначити як виконане</button>
             </form>
         {% endif %}
 

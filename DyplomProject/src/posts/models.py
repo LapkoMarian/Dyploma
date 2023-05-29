@@ -37,7 +37,7 @@ class Assignment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     due_date = models.DateTimeField()
-    marks = models.IntegerField()
+    marks = models.IntegerField(default=12)
 
     def __str__(self):
         return self.title

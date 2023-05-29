@@ -30,7 +30,7 @@
                     <div class="col-12 mb-2">
                         <div id = "clicked-post" class="card shadow-sm">
                             <div class="card-body">
-                                <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" width="30" height="30" alt="..." class="rounded-circle mr-2 text-none">
+                                <img src="{{ request.user.profile.image.url }}" width="30" height="30" alt="..." class="rounded-circle mr-2 text-none">
                                 <a  class = "text-decoration-none" href="#!">Поділіться чимось зі своїм класом</a>
                             </div>
                         </div>
@@ -46,13 +46,13 @@
                                         {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Description" }}
                                     </div>
                                     <div class="float-left">
-                                        {{ post_form.file_field|attr:"class:form-control btn btn-circle" }}
+                                        {{ post_form.file_field }}
                                     </div>
                                     <button type = "submit" class="btn btn-sm btn-primary m-1 pl-3 pr-3 float-right">
-                                        Post
+                                        Опублікувати
                                     </button>
                                     <button id = "cancel-post" class="btn btn-sm btn-outline-dark m-1 float-right">
-                                        Cancel
+                                        Скасувати
                                     </button>
                                 </form>
                             </div>
@@ -66,7 +66,7 @@
                             <!-- CARD -->
                             <div class="card shadow-sm mt-3">
                                 <div class="card-body">
-                                    <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" width="35" height="35" alt="..." class="rounded-circle mr-2 mb-2 float-left">
+                                    <img src="{{ content.created_by.profile.image.url }}" width="35" height="35" alt="..." class="rounded-circle mr-2 mb-2 float-left">
                                     <div class="dropdown no-arrow float-right">
                                     <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
@@ -89,6 +89,7 @@
                                         <h6>Опубліковано {{ content.created_at }} Автор {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
                                         <hr>
                                         <h5>{{ content.description }}</h5>
+                                    <p>
                                     </div>
                                     <!-- End Container -->
                                     <!-- CARD -->
@@ -99,7 +100,7 @@
                                             <div class="card mb-3 ml-2">
                                                 <div class="row no-gutters">
                                                     <div class="col-md-4">
-                                                    <img src="{{ resource.files.url  }}" class="card-img img-fluid d-none d-lg-block" alt="...">
+                                                    <img src="{% static 'mainapp/img/file.png'%}" class="card-img img-fluid d-none d-lg-block" alt="...">
                                                     </div>
                                                     <div class="col-md-8">
                                                     <div class="card-body">
@@ -107,7 +108,7 @@
                                                         </h5>
                                                     </div>
                                                     </div>
-                                                </div>
+                                                </hr>
                                             </div>
                                         </div>
                                         {% endfor %}
@@ -120,7 +121,7 @@
                                         {% for comment in content.post_comment %}
                                             <div class="d-flex flex-row">
                                                 <img src="{{ comment.user.profile.image.url }}" width="35" height="35" alt="..." class="rounded-circle mr-2">
-                                                <p class='ml-2'><strong>{{ comment.user }}</strong>: {{ comment.comment_text}}</p>
+                                                <p class='ml-2'><strong>{{ comment.user.first_name }} {{ comment.user.last_name }}</strong>: {{ comment.comment_text}}</p>
                                             </div>
                                         {% endfor %}
                                     </div>
