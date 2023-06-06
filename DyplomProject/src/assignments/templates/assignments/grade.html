@@ -2,13 +2,13 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
-{% block title %} Assignment-Create {% endblock title %}
+{% block title %}Оцінка{% endblock title %}
 
 {% block content %}
 <nav class="navbar navbar-light bg-light">
     <div class="navbar-brand">
         <a href="{% url 'assignments:view_grades' submit_assignment.assignment.pk %}"><i class="fas fa-times"></i></a>
-        <div class="pl-3 float-right">Grade <strong>{{ submit_assignment.user.username }}</strong> for <strong>{{ submit_assignment.assignment.title }}</strong></div>
+        <div class="pl-3 float-right">Оцінка <strong>{{ submit_assignment.user.username }}</strong> for <strong>{{ submit_assignment.assignment.title }}</strong></div>
     </div>
     <!-- <form class="form-inline">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -34,10 +34,13 @@
                 {% for file in assignment_files %}
                 <a target="_blank" href="{{ file.files.url }}">
                     <div class="col-4">
-                        <div class="card border border-secondary" style="width: 18rem;">
-                            <img class="card-img-top" src="{{ file.files.url }}">
-                            <div class="card-body">
-                              <h5 class="card-title">{{ file.filename }}</h5>
+                        <div class="card border border-secondary" style="width: 18rem; display: flex; justify-content: flex-start; align-items: center; flex-direction: row; padding: 18px;">
+                            <div>
+                                <img src="{% static 'mainapp/img/file.png' %}"
+                                  alt="..." height="75" width="100">
+                            </div>
+                            <div>
+                                <h5 style="text-align: center">{{ file.filename }}</h5>
                             </div>
                         </div>
                     </div>
@@ -49,18 +52,18 @@
         <div class="col-lg-3 vl v p-3 mt-sm-2">
             <!-- For -->
             <hr class='d-lg-none d-sm-block'>
-            <h5><strong>Grade {{ submit_assignment.user.first_name }} {{submit_assignment.user.last_name}}</strong></h5>
-            <h5><strong>Grade : 
+            <h5><strong>Оцінка {{ submit_assignment.user.first_name }} {{submit_assignment.user.last_name}}</strong></h5>
+            <h5><strong>Оцінка :
                 {% if submit_assignment.is_reviewed %}
                     {{ submit_assignment.grade }}
                 {% else %}
-                    Not graded
+                    Немає оцінки
                 {% endif %}
             </strong></h5>
                 <form action="" method="POST">
                 {% csrf_token %}
                 {{ grade_form|crispy }}
-                <button class="btn btn-primary float-right">Grade</button>
+                <button class="btn btn-primary float-right">Оцінка</button>
             </form>
 
         </div>

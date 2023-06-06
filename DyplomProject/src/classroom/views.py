@@ -11,17 +11,18 @@ from comments.forms import CommentCreateForm
 
 
 @login_required
-def home(requests):
-    teaching_classes = set([classroom.classroom for classroom in requests.user.classroomteachers_set.all()])
-    classrooms = set(requests.user.classroom_set.all()).union(teaching_classes)
+def home(request):
+    teaching_classes = request.user.classroomteachers_set.all()
+    student_classes = request.user.classroom_set.all()
     classroom_form = ClassroomCreationForm()
     join_classroom_form = JoinClassroomForm()
     context = {
-        'classrooms': classrooms,
+        'teaching_classes': teaching_classes,
+        'student_classes': student_classes,
         'classroom_form': classroom_form,
         'join_classroom_form': join_classroom_form
     }
-    return render(requests, 'classroom/home.html', context)
+    return render(request, 'classroom/home.html', context)
 
 
 @login_required
@@ -91,6 +92,8 @@ def open_classroom(request, pk):
 def leave_classroom(request, pk):
     classroom = get_object_or_404(Classroom, pk=pk)
     if request.user in classroom.users.all():
+        if request.user.profile.is_teacher():
+            request.user.classroomteachers_set
         classroom.users.remove(request.user)
         messages.success(request, f'Ви покинули клас!')
     else:
@@ -168,7 +171,6 @@ def assignment_submit(request, pk):
         assignment_files = submit_assignment.assignmentfile_set.all()
     else:
         assignment_files = None
-
 
     context = {
         'assignment': assignment,
