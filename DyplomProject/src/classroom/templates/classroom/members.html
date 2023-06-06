@@ -39,8 +39,8 @@
 
     {% for student in students %}
       <div class="row">
-        <img width="25px" height="25px" class="img-profile rounded-circle" src="{{ student.student.profile.image.url }}" style="margin-left: 15px">
-        <p class="text-dark" style="margin-left: 10px">{{ student.student.first_name }} {{ student.student.last_name }}</p>
+        <img width="25px" height="25px" class="img-profile rounded-circle" src="{{ student.profile.image.url }}" style="margin-left: 15px">
+        <p class="text-dark" style="margin-left: 10px">{{ student.first_name }} {{ student.last_name }}</p>
       </div>
     {% endfor %}
 </div>

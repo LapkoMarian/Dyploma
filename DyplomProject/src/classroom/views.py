@@ -13,7 +13,7 @@ from comments.forms import CommentCreateForm
 @login_required
 def home(request):
     teaching_classes = request.user.classroomteachers_set.all()
-    student_classes = request.user.classroom_set.all()
+    student_classes = request.user.classrooms.all()
     classroom_form = ClassroomCreationForm()
     join_classroom_form = JoinClassroomForm()
     context = {
@@ -36,7 +36,6 @@ def create_classroom(request):
             classroom = Classroom(name=name, description=description, created_by=request.user,
                                   classroom_code=Classroom.generate_code())
             classroom.save()
-            classroom.users.set([request.user])
             topic = Topic(name='General', classroom=classroom)
             topic.save()
             classroom_teachers = ClassroomTeachers(classroom=classroom, teacher=request.user)
@@ -54,8 +53,7 @@ def join_classroom(request):
         if form.is_valid(): 
             classroom = Classroom.objects.filter(classroom_code = form.cleaned_data.get('code')).first()
             if classroom:
-                classroom.users.set([request.user])
-                request.user.classroom_set.add(classroom)
+                request.user.classrooms.add(classroom)
                 messages.success(request, f'You are added in {classroom.name}')
             else:
                 messages.success(request, f'Error adding you to the classroom')
@@ -67,34 +65,35 @@ def join_classroom(request):
 @login_required
 def open_classroom(request, pk):
     classroom = get_object_or_404(Classroom, pk=pk)
-    topics = classroom.topic_set.all()
-    contents = []
-    for topic in topics:
-        contents.extend(list(topic.post_set.all()))
-        contents.extend(list(topic.assignment_set.all()))
+    if request.user in [clt.teacher for clt in classroom.classroomteachers_set.all()] or request.user in classroom.users.all():
+        topics = classroom.topic_set.all()
+        contents = []
+        for topic in topics:
+            contents.extend(list(topic.post_set.all()))
+            contents.extend(list(topic.assignment_set.all()))
 
-    contents.sort(key=lambda x: x.created_at)
+        contents.sort(key=lambda x: x.created_at)
 
-    post_form = PostForm()
-    comment_form = CommentCreateForm()
+        post_form = PostForm()
+        comment_form = CommentCreateForm()
 
-    context = {
-        'classroom': classroom,
-        'contents': reversed(contents),
-        'post_form': post_form,
-        'comment_form': comment_form,
-    }
+        context = {
+            'classroom': classroom,
+            'contents': reversed(contents),
+            'post_form': post_form,
+            'comment_form': comment_form,
+        }
 
-    return render(request, 'classroom/classroom.html', context)
+        return render(request, 'classroom/classroom.html', context)
+    messages.error(request, f'Ви не є учасником цього класу!')
+    return redirect('classroom:home')
 
 
 @login_required
 def leave_classroom(request, pk):
     classroom = get_object_or_404(Classroom, pk=pk)
     if request.user in classroom.users.all():
-        if request.user.profile.is_teacher():
-            request.user.classroomteachers_set
-        classroom.users.remove(request.user)
+        request.user.classrooms.remove(classroom)
         messages.success(request, f'Ви покинули клас!')
     else:
         messages.error(request, f'Ви не є учасником цього класу!')
@@ -105,12 +104,12 @@ def leave_classroom(request, pk):
 @login_required
 @permission_required("classroom.delete_classroom", raise_exception=True)
 def delete_classroom(request, pk):
-    try:
-        classroom = Classroom.objects.get(pk=pk)
+    classroom = get_object_or_404(Classroom, pk=pk)
+    if request.user in [clt.teacher for clt in classroom.classroomteachers_set.all()]:
         classroom.delete()
         messages.success(request, f'Клас успішно видалено.')
-    except Classroom.DoesNotExist:
-        messages.error(request, f'Клас не знайдено.')
+    else:
+        messages.error(request, f'Ви не можете видалити клас! Це може зробити тільки вчитель!')
     return redirect('classroom:home')
 
 

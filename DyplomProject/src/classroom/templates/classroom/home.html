@@ -15,15 +15,15 @@
         <!-- CARD -->
         <div class="card border-bottom-primary shadow mb-4">
             <div class="card-header py-3">
-                <a href="{% url 'classroom:open_classroom' classroom.id %}">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ classroom.name }}</h6>
+                <a href="{% url 'classroom:open_classroom' classroom.classroom.id %}">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ classroom.classroom.name }}</h6>
                 </a>
                 <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'classroom:leave_classroom' classroom.pk %}">
+                    <a class="dropdown-item" href="{% url 'classroom:delete_classroom' classroom.classroom.id %}">
                         <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
                         <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Видалити клас</span>
                     </a>
@@ -35,7 +35,7 @@
                     <div class="text-center">
                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
                     </div>
-                    <p class="text-secondary">{{ classroom.description }}</p>
+                    <p class="text-secondary">{{ classroom.classroom.description }}</p>
                 </div>
             </a>
         </div>
@@ -45,7 +45,7 @@
     {% endfor %}
 </div>
 <!-- END ROW -->
-{% endif %}
+{% else %}
 <h1 class="h3 mb-4 text-gray-800">Я учень</h1>
 <!-- ROW  -->
 <div class="row">
@@ -84,6 +84,7 @@
     <!-- END COL -->
     {% endfor %}
 </div>
+{% endif %}
 <!-- Modal Create Class -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

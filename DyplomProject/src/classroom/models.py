@@ -11,7 +11,7 @@ class Classroom(models.Model):
     description = models.TextField(max_length=300)
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(default=timezone.now)
-    users = models.ManyToManyField(User, related_name='users')
+    users = models.ManyToManyField(User, related_name='classrooms')
 
     @staticmethod
     def generate_code(length=6):
