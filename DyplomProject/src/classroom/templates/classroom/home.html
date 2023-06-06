@@ -17,6 +17,17 @@
                 <a href="{% url 'classroom:open_classroom' classroom.id %}">
                     <h6 class="m-0 font-weight-bold text-primary">{{ classroom.name }}</h6>
                 </a>
+                <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'classroom:leave_classroom' classroom.pk %}">
+                        <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
+                        <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Покинути клас</span>
+                    </a>
+                </div>
+            </div>
             </div>
             <a href="#!">
                 <div class="card-body">

@@ -14,11 +14,11 @@
             <div class="row">
                 <li class="nav-item ml-2">
                     <h1>{{ assignment.total_turned_in }}</h1>
-                    <small class='text-success'>Turned in</small>
+                    <small class='text-success'>Здали</small>
                 </li>
                 <li class="nav-item ml-4">
                     <h1>{{ assignment.total_missing }}</h1>
-                    <small class='text-danger'>Missing</small>
+                    <small class='text-danger'>Не здали</small>
                 </li>
             </div>
         </ul>
@@ -29,7 +29,7 @@
     <div class="row">
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Assigned
+                Призначено
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">All</a>
@@ -64,11 +64,11 @@
                             <img class = "img-fluid" src="{{ ass.first_file_url }}" alt="" srcset="">
                         {% endif %}
                         <div class="mt-1">
-                            <a href="#" class="card-link">{{ ass.file_count }}</a>
+                            <a href="#" class="card-link"></a>
                             {% if ass.turned_in %}
-                                <a href="#" class="card-link text-success">Turned In</a>
+                                <a href="#" class="card-link text-success">Здано</a>
                             {% else %}
-                                <a href="#" class="card-link text-danger">Missing</a>
+                                <a href="#" class="card-link text-danger">Не здано</a>
                             {% endif %}
                         </div>
                     </div>

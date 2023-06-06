@@ -2,7 +2,7 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
-{% block title %} To Review {% endblock title %}
+{% block title %} Перевірка завдань {% endblock title %}
 
 {% block content %}
 <div class = "ml-lg-5 mr-lg-5">
@@ -19,25 +19,25 @@
           </div>
           <div id="collapse{{ assignment.pk }}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
-               <small>Posted on {{ assignment.created_at }}</small>
+               <small>Опубліковано {{ assignment.created_at }}</small>
                <p>{{ assignment.description }}</p>
                <div class = "d-flex flex-row-reverse">
                     <div class="p-2 border-left border-secondary">
                         <h1 class="text-dark">{{ assignment.total_turned_in  }}</h1>
                         <br>
-                        <p>Turned in</p>
+                        <p>Здали</p>
                     </div>
                     <div class="p-2 border-left border-secondary">
                         <h1 class="text-dark">{{ assignment.total_missing }}</h1>
                         <br>
-                        <p>Missing</p>
+                        <p>Не здали</p>
                     </div>
                </div>
             <hr>
             <div class="d-flex flex-row bd-highlight mb-3">
-                <a class = "p-2" href = "{% url 'classroom:assignment_submit' assignment.pk %}" >View Assignment</a>
-                <a class = "p-2" href = "{% url 'classroom:student_work' assignment.pk %}" >View Submissions</a>
-                <a class = "p-2" href = "{% url 'assignments:view_grades' assignment.pk %}" >View Grades</a>
+                <a class = "p-2" href = "{% url 'classroom:assignment_submit' assignment.pk %}" >Переглянути завдання</a>
+                <a class = "p-2" href = "{% url 'classroom:student_work' assignment.pk %}" >Переглянути подане учнем завдання</a>
+                <a class = "p-2" href = "{% url 'assignments:view_grades' assignment.pk %}" >Переглянути оцінки</a>
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@ import string
 import random
 
 
-# members are not teachers
 class Classroom(models.Model):
     name = models.CharField(max_length=200)
     classroom_code = models.CharField(max_length=20, blank=True)
