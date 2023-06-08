@@ -4,65 +4,70 @@
 
 
 {% block content %}
-<div class="panel">
-    <div class="panel-section">
-        <h2>Розклад уроків</h2>
-        <table border="1">
-            {% for clas in classes %}
-            <tr>
-                <th colspan="6" class="n" style="text-align: center">{{ clas.class_name }}</th>
-            </tr>
-            {% endfor %}
-            <tr>
-                <th></th>
-                {% for weekday in weekdays %}
-                <th>{{ weekday.name_day }}</th>
-                {% endfor %}
-            </tr>
-
-            {% for call in calls %}
-            <tr>
-                <th>{{ call.lesson_number }}</th>
-                {% for weekday in weekdays %}
-                <td>
-                    {% for schedule in schedules %}
-                    {% if schedule.days == weekday %}
-                    {% if schedule.number_lesson == call %}
-                    <span>{{ schedule.name_lesson }} <p>Вчитель: {{ schedule.teacher.last_name }} {{ schedule.teacher.first_name }}</span>
-                    {% endif %}
-                    {% endif %}
+    <div class="panel">
+        <div class="panel-section">
+            <h2>Розклад уроків</h2>
+        {% if request.user.profile.is_teacher %}
+            <table border="1">
+                    <tr>
+                        <th colspan="6" class="n" style="text-align: center">{{ request.user.last_name }} {{ request.user.first_name }}</th>
+                    </tr>
+                <tr>
+                    <th></th>
+                    {% for weekday in weekdays %}
+                        <th>{{ weekday.name_day }}</th>
                     {% endfor %}
-                </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+                </tr>
 
-    <div class="panel-section">
-        <h2>Розклад дзвінків</h2>
-        <table border="1">
-            <tr>
-                <th></th>
-                <th>Початок уроку</th>
-                <th>Кінець уроку</th>
-                <th>Перерва</th>
-            </tr>
-            {% for call in calls %}
-            <tr>
-                <th>{{ call.lesson_number }}</th>
-                <td>
-                    <span>{{ call.starting_lesson }}</span>
-                </td>
-                <td>
-                    <span>{{ call.ending_lesson }}</span>
-                </td>
-                <td>
-                    <span>{{ call.pause }} хвилин </span>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for call in calls %}
+                    <tr>
+                        <th>{{ call.lesson_number }}</th>
+                        {% for weekday in weekdays %}
+                            <td>
+                                {% for schedule in schedules %}
+                                    {% if schedule.days == weekday %}
+                                        {% if schedule.number_lesson == call %}
+                                            <span>{{ schedule.name_lesson }} <p>Клас: {{ schedule.class_name }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% elif request.user.profile.is_student %}
+            <table border="1">
+                {% for form in forms %}
+                    <tr>
+                        <th colspan="6" class="n" style="text-align: center">{{ form.class_name }}</th>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th></th>
+                    {% for weekday in weekdays %}
+                        <th>{{ weekday.name_day }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for call in calls %}
+                    <tr>
+                        <th>{{ call.lesson_number }}</th>
+                        {% for weekday in weekdays %}
+                            <td>
+                                {% for schedule in schedules %}
+                                    {% if schedule.days == weekday %}
+                                        {% if schedule.number_lesson == call %}
+                                            <span>{{ schedule.name_lesson }} <p>Вчитель: {{ schedule.teacher.first_name }} {{ schedule.teacher.last_name }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        </div>
     </div>
-</div>
 {% endblock %}

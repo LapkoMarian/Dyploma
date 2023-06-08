@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Розклад дзвінків {% endblock title %}
+
+{% block content %}
+<div class="panel-section">
+        <h2>Розклад дзвінків</h2>
+        <table border="1">
+            <tr>
+                <th></th>
+                <th>Початок уроку</th>
+                <th>Кінець уроку</th>
+                <th>Перерва</th>
+            </tr>
+            {% for call in calls %}
+            <tr>
+                <th>{{ call.lesson_number }}</th>
+                <td>
+                    <span>{{ call.starting_lesson }}</span>
+                </td>
+                <td>
+                    <span>{{ call.ending_lesson }}</span>
+                </td>
+                <td>
+                    <span>{{ call.pause }} хвилин </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

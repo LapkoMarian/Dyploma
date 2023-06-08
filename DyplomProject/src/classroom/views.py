@@ -233,7 +233,7 @@ def todo(request):
     for assignment in assignments:
         if not assignment.is_turnedin(request.user):
             filtered_assignment.append(assignment)
-    context = {'assignments':filtered_assignment}
+    context = {'assignments': filtered_assignment}
     
     return render(request, 'classroom/todo.html', context)
 

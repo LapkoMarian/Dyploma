@@ -1,11 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.db.models import Value
+from django.db.models.functions import Concat
+
 from . import models
 
 admin.site.register(models.Weekday)
 admin.site.register(models.Call)
 admin.site.register(models.Lesson)
-admin.site.register(models.Clas)
+admin.site.register(models.Form)
 
 
 class LessonAdmin(admin.ModelAdmin):

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'users',
     'comments',
     'schedule',
+    'journal',
     'assignments',
     'crispy_forms',
     'widget_tweaks',
@@ -99,7 +100,7 @@ LANGUAGES = [
 
 ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 

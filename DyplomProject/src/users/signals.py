@@ -1,16 +1,14 @@
+from django.shortcuts import redirect
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from .models import Profile 
-
+from .models import Profile, StudentsForm
 
 
 @receiver(post_save,sender = User)
 def created_profile(sender,instance,created,**kwargs):
-    print("Making a Profile")
     if created:
-        Profile.objects.create(user =instance)
-
+        Profile.objects.create(user=instance)
 
 
 @receiver(post_save,sender = User)
