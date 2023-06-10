@@ -2,29 +2,40 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
-{% block title %} Home {% endblock title %}
+{% block title %} Завдання {% endblock title %}
 
 {% block content %}
 <div class="row m-2">
     <div class="col-lg-8">
       <div class="row">
+        <img src="{% static 'mainapp/img/assignment.png' %}" width="45" height="45"
+                                                 alt="..." class="rounded-circle mr-2 mb-2 float-left">
         <h3 class="text-primary">{{ assignment.title }}</h3>
-        <div class="dropdown no-arrow ml-auto">
-          <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header">Dropdown Header:</div>
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </div>
+          {% if request.user.profile.is_teacher %}
+            <div class="dropdown no-arrow ml-auto">
+              <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="{% url 'classroom:assignment_edit' assignment.pk %}">
+                    <i class="fas fa-edit"></i>
+                    <span>Редагувати завдання</span>
+                </a>
+                <a class="dropdown-item" href="{% url 'classroom:assignment_delete' assignment.pk %}">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Видалити завдання</span>
+                </a>
+              </div>
+            </div>
+          {% endif %}
       </div>
-      <p class="text-muted">{{ assignment.created_by.username }} {{ assignment.created_at }}</p>
       <div class="row">
-        <p class="text-dark font-weight-bold">{{ assignment.marks }} балів</p>
+        <p class="text-muted">{{ assignment.created_by.first_name }} {{ assignment.created_by.last_name }}
+            <i class="fas fa-circle fa-xs"></i>
+            {{ assignment.created_at }}
+      </div>
+      <div class="row">
+        <p class="text-dark font-weight-bold">Максимальна оцінка {{ assignment.marks }} балів</p>
         <p class="ml-auto text-dark font-weight-bold">Потрібно виконати до {{ assignment.due_date }}</p>
       </div>
       <hr>
@@ -35,7 +46,7 @@
             <div class="card mb-3 ml-2">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                    <img src="{{ resource.files.url  }}" class="card-img img-fluid d-none d-lg-block" alt="...">
+                    <img src="{% static 'mainapp/img/file.png' %}" class="card-img img-fluid d-none d-lg-block" alt="...">
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">

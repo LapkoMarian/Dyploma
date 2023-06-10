@@ -4,3 +4,6 @@ from .models import Profile, StudentsForm
 
 admin.site.register(Profile)
 admin.site.register(StudentsForm)
+
+
+

@@ -2,19 +2,19 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
-{% block title %} Створити завдання {% endblock title %}
+{% block title %} Редагувати завдання {% endblock title %}
 
 {% block content %}
-<form action ="{% url 'classroom:assignment_create' %}" method="POST" enctype='multipart/form-data'>
+<form action ="{% url 'classroom:assignment_edit' assignment.pk %}" method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
     <nav class="navbar navbar-light bg-light">
         <div class="navbar-brand">
-            <a href="{% url 'classroom:home' %}"><i class="fas fa-times"></i></a>
+            <a href="{% url 'classroom:open_classroom' assignment.topic.classroom.pk %}"><i class="fas fa-times"></i></a>
             <div class="pl-3 float-right">Завдання</div>
         </div>
         <div class="form-inline">
             <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-secondary">Опублікувати</button>
+                <button type="submit" class="btn btn-secondary">Оновити</button>
             </div>
         </div>
     </nav>
@@ -22,16 +22,35 @@
     <div class="row m-3">
         <div class="col-lg-8">
             <div class="form-group">
-                <label for="title">Назва</label>
+                <h5 for="title">Назва</h5>
                 {{ form.title|attr:"class:form-control" }}
             </div>
             <hr>
             <div class="form-group">
-                <label for="description">Опис</label>
+                <h5 for="description">Опис</h5>
                 {{ form.description|attr:"class:form-control" }}
             </div>
             <hr>
-            {{ form.file_field|attr:"class:choose" }}
+{#            <div class="form-group">#}
+{#                {{ form.file_field|attr:"class:choose" }}#}
+{#            </div>#}
+            <div class="col-6">
+            <div class="card mb-3 ml-2">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                    <img src="{% static 'mainapp/img/file.png' %}" class="card-img img-fluid d-none d-lg-block" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="form-group">
+                        <h5 class="card-title "><a target="_blank">{{ form.file_field|attr:"class:choose" }}...</a>
+                        </h5>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
         <div class="col-lg-4 vl v p-3 mt-sm-2">
             <!-- For -->
@@ -57,7 +76,7 @@
             <h5>Дата здачі</h5>
             <div class="row">
                 <div class="col">
-                    {{ form.due_date|attr:"class:form-control"|attr:"type:datetime-local" }}
+                    <input type="datetime-local" class="form-control" value="{{ form.due_date.value|date:'Y-m-d' }}T{{ form.due_date.value|date:'H:i' }}">
                 </div>
             </div>
             <hr>

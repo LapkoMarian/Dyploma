@@ -25,16 +25,10 @@ class Profile(models.Model):
             img.save(self.image.path)
 
     def is_teacher(self):
-        if self.user.groups.filter(id=1):
-            return True
-        else:
-            return False
+        return self.user.groups.filter(id=1).exists()
 
     def is_student(self):
-        if self.user.groups.filter(id=2):
-            return True
-        else:
-            return False
+        return self.user.groups.filter(id=2).exists()
 
 
 class StudentsForm(models.Model):
@@ -43,4 +37,11 @@ class StudentsForm(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name} {self.form.class_name}'
+
+
+def get_first_name(self):
+    return f'{self.first_name} {self.last_name}'
+
+
+User.add_to_class("__str__", get_first_name)
 

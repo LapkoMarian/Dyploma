@@ -39,10 +39,10 @@
                                           enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="form-group">
-                                            {{ post_form.title|attr:"class:form-control"|attr:"placeholder:Title"}}
+                                            {{ post_form.title|attr:"class:form-control"|attr:"placeholder:Назва" }}
                                         </div>
                                         <div class="form-group">
-                                            {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Description" }}
+                                            {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Опис" }}
                                         </div>
                                         <div class="float-left">
                                             {{ post_form.file_field }}
@@ -58,110 +58,146 @@
                             </div>
                             <!-- END TEXT AREA -->
                         </div>
+
                         <!-- END COL -->
                         <!-- COL -->
                         {% for content in contents %}
-                            <div class="col-12">
-                            <!-- CARD -->
-                            <div class="card shadow-sm mt-3">
-                                <div class="card-body">
-                                    {% if content.content_type == 'post' %}
-                                        <img src="{{ content.created_by.profile.image.url }}" width="35" height="35"
-                                         alt="..." class="rounded-circle mr-2 mb-2 float-left">
-                                    {% else %}
-                                        <img src="{% static 'mainapp/img/assignment.png' %}" width="35" height="35"
-                                         alt="..." class="rounded-circle mr-2 mb-2 float-left">
-                                    {% endif %}
-                                    <div class="dropdown no-arrow float-right">
-                                        <a class="btn btn-circle dropdown-toggle" href="#" role="button"
-                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                           aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Створити клас</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                         </div>
+                                        <form action="{% url 'posts:edit_post' content.pk %}" method="POST"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="exampleInput">Назва</label>
+                                                {{ post_form.title|attr:"class:form-control"|attr:"placeholder:Назва" }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exam">Опис</label>
+                                                {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Опис" }}
+                                            </div>
+                                            <div class="float-left">
+                                                {{ post_form.file_field }}
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-primary m-1 pl-3 pr-3 float-right">
+                                                Опублікувати
+                                            </button>
+                                            <button id="cancel-post" class="btn btn-sm btn-outline-dark m-1 float-right">
+                                                Скасувати
+                                            </button>
+                                        </form>
                                     </div>
-                                    <!-- Container -->
-                                    <div class="container">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <!-- CARD -->
+                                <div class="card shadow-sm mt-3">
+                                    <div class="card-body">
                                         {% if content.content_type == 'post' %}
-                                            <h4 class="text-primary">{{ content.title }}</h4>
+                                            <img src="{{ content.created_by.profile.image.url }}" width="35" height="35"
+                                                 alt="..." class="rounded-circle mr-2 mb-2 float-left">
                                         {% else %}
-                                            <a href="{% url 'classroom:assignment_submit' content.pk %}"><h4
-                                                    class="text-primary">{{ content.title }}</h4></a>
+                                            <img src="{% static 'mainapp/img/assignment.png' %}" width="35" height="35"
+                                                 alt="..." class="rounded-circle mr-2 mb-2 float-left">
                                         {% endif %}
-                                        <h6>Опубліковано {{ content.created_at }}
-                                            Автор {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
-                                        <hr>
-                                        <h5>{{ content.description }}</h5>
-                                        <p>
-                                    </div>
-                                    <!-- End Container -->
-                                    <!-- CARD -->
+                                        <!-- Container -->
+                                        <div class="container">
+                                            {% if content.content_type == 'post' %}
+                                                <h4 class="text-primary">{{ content.title }}</h4>
+                                                <div class="dropdown no-arrow ml-auto">
+                                                      <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
+                                                      </a>
+                                                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                                            <a class="dropdown-item" href="{% url 'posts:edit_post' content.pk %}">
+                                                                <i class="fas fa-edit"></i>
+                                                                <span>Редагувати пост</span>
+                                                            </a>
+                                                            <a class="dropdown-item" href="{% url 'posts:delete_post' content.pk %}">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                                <span>Видалити пост</span>
+                                                            </a>
+                                                      </div>
+                                                </div>
+                                            {% else %}
+                                                <a href="{% url 'classroom:assignment_submit' content.pk %}"><h4
+                                                        class="text-primary">{{ content.title }}</h4></a>
+                                            {% endif %}
+                                            <h6>Опубліковано {{ content.created_at }}
+                                                Автор {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
+                                            <hr>
+                                            <h5>{{ content.description }}</h5>
+                                            <p>
+                                        </div>
+                                        <!-- End Container -->
+                                        <!-- CARD -->
 
-                                    <div class="row">
-                                        {% for resource in content.resources %}
-                                            <div class="col-6">
-                                            <div class="card mb-3 ml-2">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="{% static 'mainapp/img/file.png' %}"
-                                                             class="card-img img-fluid d-none d-lg-block" alt="...">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title "><a target="_blank"
-                                                                                       href="{{ resource.files.url }}">{{ resource.filename }}...</a>
-                                                            </h5>
+                                        <div class="row">
+                                            {% for resource in content.resources %}
+                                                <div class="col-6">
+                                                    <div class="card mb-3 ml-2">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-md-4">
+                                                                <img src="{% static 'mainapp/img/file.png' %}"
+                                                                     class="card-img img-fluid d-none d-lg-block"
+                                                                     alt="...">
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title "><a target="_blank"
+                                                                                               href="{{ resource.files.url }}">{{ resource.filename }}...</a>
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
-                                        </div>
-                                    </div>
-
-                                    {% if content.content_type == 'post' %}
-                                        <div class="card-body">
-                                            {% for comment in content.post_comment %}
-                                                <hr>
-                                                <div class="d-flex flex-row">
-                                                    <img src="{{ comment.user.profile.image.url }}" width="35"
-                                                         height="35" alt="..." class="rounded-circle mr-2">
-                                                    <p class='ml-2'>
-                                                        <strong>{{ comment.user.first_name }} {{ comment.user.last_name }}</strong>: {{ comment.comment_text }}
-                                                    </p>
-                                                </div>
                                             {% endfor %}
                                         </div>
-                                        <hr>
-                                        <div class="card-body">
-                                            <form action="{% url 'comments:create_comment' content.pk %}" method="post">
-                                                <div class="input-group">
-                                                    <img src="{{ request.user.profile.image.url }}" width="35"
-                                                         height="35" alt="..." class="rounded-circle ml-2 mr-2">
-                                                    {% csrf_token %}
-                                                    {{ comment_form.comment_text|attr:"class:form-control rounded-pill"|attr:"placeholder:Додайте коментар" }}
-                                                    <div class="input-group-append">
-                                                        <button class=" btn btn-circle" type="submit"
-                                                                id="button-addon2"><i
-                                                                class="fas fa-angle-double-right"></i></button>
+
+                                        {% if content.content_type == 'post' %}
+                                            <div class="card-body">
+                                                {% for comment in content.post_comment %}
+                                                    <hr>
+                                                    <div class="d-flex flex-row">
+                                                        <img src="{{ comment.user.profile.image.url }}" width="35"
+                                                             height="35" alt="..." class="rounded-circle mr-2">
+                                                        <p class='ml-2'>
+                                                            <strong>{{ comment.user.first_name }} {{ comment.user.last_name }}</strong>: {{ comment.comment_text }}
+                                                        </p>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <hr>
+                                            <div class="card-body">
+                                                <form action="{% url 'comments:create_comment' content.pk %}"
+                                                      method="post">
+                                                    <div class="input-group">
+                                                        <img src="{{ request.user.profile.image.url }}" width="35"
+                                                             height="35" alt="..." class="rounded-circle ml-2 mr-2">
+                                                        {% csrf_token %}
+                                                        {{ comment_form.comment_text|attr:"class:form-control rounded-pill"|attr:"placeholder:Додайте коментар" }}
+                                                        <div class="input-group-append">
+                                                            <button class=" btn btn-circle" type="submit"
+                                                                    id="button-addon2"><i
+                                                                    class="fas fa-angle-double-right"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- END CARD -->
                                 </div>
-                                <!-- END CARD -->
+                                <!-- END COL -->
                             </div>
                         {% endfor %}
-                        <!-- END COL -->
-                        </div>
                     </div>
                     <!-- END ROW -->
                 </div>

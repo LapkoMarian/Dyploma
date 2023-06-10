@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 
 from .models import Classroom, Topic, ClassroomTeachers
-from posts.models import Assignment,SubmittedAssignment,AssignmentFile, Attachment
+from posts.models import Assignment,SubmittedAssignment,AssignmentFile, Attachment, Post
 from .forms import ClassroomCreationForm,JoinClassroomForm, PostForm, AssignmentFileForm, AssignmentCreateForm
 from comments.forms import CommentCreateForm
 
@@ -180,6 +180,50 @@ def assignment_submit(request, pk):
         'is_teacher': is_teacher,
     }
     return render(request, 'classroom/assignment_submit.html', context)
+
+
+@login_required
+@permission_required("posts.change_assignment", raise_exception=True)
+def assignment_edit(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+    if request.method == 'POST':
+        form = AssignmentCreateForm(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            topic = get_object_or_404(Topic, pk=int(form.cleaned_data['topics']))
+            assignment.title = form.cleaned_data['title']
+            assignment.description = form.cleaned_data['description']
+            assignment.topic = topic
+            assignment.due_date = form.cleaned_data['due_date']
+            assignment.save()
+            # Опціонально, обробка завантажених файлів
+            files = request.FILES.getlist('file_field')
+            for f in files:
+                Attachment.objects.create(assignment=assignment, files=f)
+            messages.success(request, f'Завдання успішно відредаговано.')
+            return redirect('classroom:open_classroom', topic.classroom.pk)
+    else:
+        form = AssignmentCreateForm(user=request.user, initial={'title': assignment.title,
+                                                                'description': assignment.description,
+                                                                'topics': assignment.topic.pk,
+                                                                'due_date': assignment.due_date,
+                                                                'classrooms': assignment.topic.classroom.pk,
+                                                                'points': assignment.marks})
+        print(assignment.due_date)
+    context = {'form': form, 'assignment': assignment}
+    return render(request, 'classroom/assignment_edit.html', context)
+
+
+@login_required
+@permission_required("classroom.delete_assignment", raise_exception=True)
+def assignment_delete(request, pk):
+    classroom = get_object_or_404(Classroom, pk=pk)
+    assignment = get_object_or_404(Assignment, pk=pk)
+    if request.user in [clt.teacher for clt in classroom.classroomteachers_set.all()]:
+        assignment.delete()
+        messages.success(request, f'Завдання успішно видалено.')
+    else:
+        messages.error(request, f'Ви не можете видалити завдання! Це може зробити тільки вчитель!')
+    return redirect('classroom:open_classroom', classroom.pk)
 
 
 @login_required

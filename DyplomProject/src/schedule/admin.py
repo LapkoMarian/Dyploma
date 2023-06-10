@@ -21,4 +21,3 @@ class LessonAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Schedule, LessonAdmin)
 
-

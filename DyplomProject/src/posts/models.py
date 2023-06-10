@@ -29,6 +29,11 @@ class Post(models.Model):
     def post_comment(self):
         return list(self.comment_set.all())
 
+    @staticmethod
+    def check_post_exists(pk):
+        post_exists = Post.objects.filter(pk=pk).exists()
+        return post_exists
+
 
 class Assignment(models.Model):
     title = models.CharField(max_length=250)
@@ -46,7 +51,6 @@ class Assignment(models.Model):
         for assignment in self.submittedassignment_set.all().filter(user=user):
             if assignment.turned_in: return True
         return False
-    
 
     @property
     def resources(self):
@@ -63,7 +67,6 @@ class Assignment(models.Model):
     @property
     def submitted_assignments(self):
         return list(self.submittedassignment_set.all())
-    
 
     @property
     def total_turned_in(self):

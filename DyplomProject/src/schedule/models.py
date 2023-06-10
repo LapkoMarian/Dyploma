@@ -43,4 +43,3 @@ class Schedule(models.Model):
     def __str__(self):
         return f'{self.class_name} -> {self.days} -> {self.number_lesson} урок -> {self.name_lesson} -> ' \
                f'{self.teacher.last_name} {self.teacher.first_name}'
-

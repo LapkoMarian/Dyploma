@@ -18,31 +18,30 @@
                         <span>Розклад уроків</span>
                     </a>
                 {% endif %}
-                </li>
-                <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'schedule:schedule' %}">
                     <span>Зміни в розкладі</span>
                 </a>
-                </li>
-                {% if request.path == '/schedule/calls/' %}
-                    <li class="nav-item">
+            </li>
+            {% if request.path == '/schedule/calls/' %}
+                <li class="nav-item">
                     <a class="nav-link border-bottom-primary" href="{% url 'schedule:calls' %}">
                         <span class="text-dark font-weight-bold">Розклад дзвінків</span>
                     </a>
-                    </li>
+                </li>
                 {% else %}
                     <li class="nav-item">
-                    <a class="nav-link" href="{% url 'schedule:calls' %}">
-                        <span>Розклад дзвінків</span>
-                    </a>
+                        <a class="nav-link" href="{% url 'schedule:calls' %}">
+                            <span>Розклад дзвінків</span>
+                        </a>
+                    </li>
                 {% endif %}
-            </li>
         {% endif %}
     </ul>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
         {% if request.path == '/classroom/' %}
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"

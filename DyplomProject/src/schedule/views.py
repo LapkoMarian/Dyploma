@@ -8,15 +8,15 @@ from users.models import StudentsForm
 @login_required
 def view_schedule(request):
     forms = []
-    schedules = Schedule.objects.all()
-    students_form = get_object_or_404(StudentsForm, user=request.user)
-    if request.user.profile.is_student:
-        schedules = Schedule.objects.filter(class_name=students_form.form)
-        forms = Form.objects.filter(class_name=students_form.form)
+    print(request.user.profile.is_student())
+    if request.user.profile.is_student():
+        print(request.user.profile.is_student())
+        students_form = StudentsForm.objects.get(user=request.user)
+        schedules = Schedule.objects.filter(class_name=students_form.form).all()
+        forms = Form.objects.filter(class_name=students_form.form).all()
         print(schedules)
-    else:
-        print(schedules)
-        schedules = Schedule.objects.filter(teacher=request.user)
+    elif request.user.profile.is_teacher():
+        schedules = Schedule.objects.filter(teacher=request.user).all()
     weekdays = Weekday.objects.all()
     calls = Call.objects.all()
 
@@ -32,8 +32,4 @@ def view_schedule(request):
 
 def view_calls(request):
     calls = Call.objects.all()
-    context = {
-        'calls': calls,
-    }
-
-    return render(request, 'schedule/calls.html', context)
+    return render(request, 'schedule/calls.html', {'calls': calls})
