@@ -11,7 +11,7 @@ class Classroom(models.Model):
     description = models.TextField(max_length=300)
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(default=timezone.now)
-    users = models.ManyToManyField(User, related_name='classrooms')
+    users = models.ManyToManyField(User, related_name='classrooms', through='ClassroomUsers')
 
     @staticmethod
     def generate_code(length=6):
@@ -30,16 +30,21 @@ class ClassroomTeachers(models.Model):
         return f'{self.teacher.username} -> {self.classroom.name}'
 
 
+class ClassroomUsers(models.Model):
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username} -> {self.classroom.name}'
+
+    class Meta:
+        db_table = "classroom_classroom_users"
+        unique_together = ('classroom', 'user')
+
+
 class Topic(models.Model):
     name = models.CharField(max_length=200)
-    classroom = models.ForeignKey(Classroom,on_delete = models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.classroom.name} -> {self.name}'
-
-
-
-
-
-
-
