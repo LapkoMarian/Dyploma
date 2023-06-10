@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, connection
 from classroom.models import ClassroomUsers
 
 
@@ -24,3 +24,22 @@ class Journal(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(default=timezone.now)
     classroom_user = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)
+
+    @staticmethod
+    def get_rating():
+        with connection.cursor() as cursor:
+            sql_query = """
+            SELECT j.id , j.rating, j.created_at, t.last_name ||' '||t.first_name as techer, classroom.name
+            FROM journal_journal as j
+            INNER JOIN auth_user as t
+                ON t.id = j.created_by_id
+            INNER JOIN classroom_classroom_users as classroom_users
+                ON classroom_users.id = j.classroom_user_id
+            INNER JOIN auth_user as student
+                ON student.id = classroom_users.user_id
+            INNER JOIN classroom_classroom as classroom
+                ON classroom.id = classroom_users.classroom_id
+            """
+            cursor.execute(sql_query)
+            results = cursor.fetchall()
+        return results

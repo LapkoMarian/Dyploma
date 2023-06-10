@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from .models import Journal
+
 
 # Create your views here.
 
@@ -10,4 +12,6 @@ def view_list_group(request):
         pass
     else:
         pass
-    return render(request, 'journal/group_list.html')
+
+    rating = Journal.get_rating()
+    return render(request, 'journal/group_list.html', context={'rating': rating})

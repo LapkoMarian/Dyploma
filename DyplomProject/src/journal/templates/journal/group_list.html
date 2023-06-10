@@ -4,6 +4,11 @@
 
 {% block content %}
     <h1>Список журналів по навчальних класах</h1>
+    <ul>
+      {% for item in rating %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
     <table class="table-journal">
         <thead>
             <tr>
