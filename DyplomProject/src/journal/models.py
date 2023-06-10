@@ -23,4 +23,4 @@ class Journal(models.Model):
     rating = models.IntegerField(choices=Rating.choices)
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(default=timezone.now)
-    classroom_user_id = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)
+    classroom_user = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)

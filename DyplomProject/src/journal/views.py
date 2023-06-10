@@ -6,5 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def view_list_group(request):
-    template_name = 'journal/group_list.html'
+    if request.user.profile.is_teacher:
+        pass
+    else:
+        pass
     return render(request, 'journal/group_list.html')
