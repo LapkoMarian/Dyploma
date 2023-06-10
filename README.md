@@ -1,6 +1,11 @@
 # Dyploma
 
-python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic
-python manage.py runserver 
+## Migrate
+- python manage.py makemigrations
+- python manage.py migrate
+
+## Static
+- python manage.py collectstatic
+
+## Run Server
+- python manage.py runserver 
