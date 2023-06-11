@@ -22,7 +22,7 @@ class Rating(models.IntegerChoices):
 class Journal(models.Model):
     rating = models.IntegerField(choices=Rating.choices)
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateField(default=timezone.now)
     classroom_user = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)
 
     @staticmethod
