@@ -33,7 +33,7 @@ class Profile(models.Model):
 
 class StudentsForm(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    form = models.OneToOneField(Form, on_delete=models.CASCADE)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name} {self.form.class_name}'
