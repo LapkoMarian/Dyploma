@@ -24,12 +24,14 @@ class Journal(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateField(default=timezone.now)
     classroom_user = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)
+    mark = models.CharField(max_length=20)
+    topik = models.CharField(max_length=200)
 
     @staticmethod
     def get_rating():
         with connection.cursor() as cursor:
             sql_query = """
-            SELECT j.id , j.rating, j.created_at, t.last_name ||' '||t.first_name as techer, classroom.name
+            SELECT j.id , j.rating, j.created_at, j.mark, j.topik, t.last_name ||' '||t.first_name as techer, classroom.name
             FROM journal_journal as j
             INNER JOIN auth_user as t
                 ON t.id = j.created_by_id
@@ -41,5 +43,16 @@ class Journal(models.Model):
                 ON classroom.id = classroom_users.classroom_id
             """
             cursor.execute(sql_query)
-            results = cursor.fetchall()
+            results = Journal.dict_fetchall(cursor)
+        return results
+
+    @staticmethod
+    def dict_fetchall(cursor):
+        columns = [col[0] for col in cursor.description]
+        rows = cursor.fetchall()
+
+        results = []
+        for row in rows:
+            results.append(dict(zip(columns, row)))
+
         return results

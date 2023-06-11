@@ -3,32 +3,36 @@
 {% block title %}Список класів{% endblock %}
 
 {% block content %}
-    <h1>Список журналів по навчальних класах</h1>
-    <ul>
-      {% for item in rating %}
-        <li>{{ item }}</li>
-      {% endfor %}
-    </ul>
-    <table class="table-journal">
-        <thead>
-            <tr>
-                <th>№</th>
-                <th>Клас</th>
-                <th>Класний керівник</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users_teachers %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>
-                        <a href="{{ user.teacher.group_manager.get_absolute_url }}">
-                            {{ user.teacher.group_manager.grade }}
-                        </a>
-                    </td>
-                    <td><a href="{{ user.teacher.get_absolute_url }}">{{ user.get_full_name }}</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h1>Список журналів по навчальних класах</h1>
+<!--<ul>-->
+<!--    {% for item in rating %}-->
+<!--    <li>{{ item }}</li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Заняття</th>
+        <th>Мітка</th>
+        <th>Тема Заняття</th>
+        <th>Дата</th>
+        <th>Оцінка</th>
+        <th>Вчитель</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in rating %}
+    <tr>
+        <td>{{item.name}}</td>
+        <td>{{item.mark}}</td>
+        <td>{{item.topik}}</td>
+        <td>{{item.created_at}}</td>
+        <td>{{item.rating}}</td>
+        <td>{{item.techer}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
