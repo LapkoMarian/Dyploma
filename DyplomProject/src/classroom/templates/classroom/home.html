@@ -5,6 +5,17 @@
 
 {% block content %}
 <!-- Page Heading -->
+<div class="card bg-dark p-3 mb-3 bg-white shadow-sm">
+    <div>
+        <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" height="100" class="float-right" alt="...">
+    </div>
+    <div class="card-img-overlay">
+        <h1 class="card-title"><b>Мої Класи</b></h1>
+        <a data-toggle="modal" data-target="#exampleModal" href="#">
+            Приєднатись до класу
+        </a>
+    </div>
+</div>
 {% if teaching_classes %}
 <h1 class="h3 mb-4 text-gray-800">Я вчитель</h1>
 <!-- ROW  -->
@@ -19,21 +30,24 @@
                     <h6 class="m-0 font-weight-bold text-primary">{{ classroom.classroom.name }}</h6>
                 </a>
                 <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'classroom:delete_classroom' classroom.classroom.id %}">
-                        <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
-                        <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Видалити клас</span>
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
                     </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                         aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'classroom:delete_classroom' classroom.classroom.id %}">
+                            <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
+                            <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Видалити клас</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
             </div>
             <a href="#!">
                 <div class="card-body">
                     <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                             src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
                     </div>
                     <p class="text-secondary">{{ classroom.classroom.description }}</p>
                 </div>
@@ -59,21 +73,24 @@
                     <h6 class="m-0 font-weight-bold text-primary">{{ classroom.name }}</h6>
                 </a>
                 <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'classroom:leave_classroom' classroom.pk %}">
-                        <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
-                        <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Покинути клас</span>
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
                     </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                         aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'classroom:leave_classroom' classroom.pk %}">
+                            <i class="fas fa-sign-out-alt fa-lg fa-fw mr-2 text-gray-600"></i>
+                            <span class="mr-3 d-none d-lg-inline text-gray-600 extra-large">Покинути клас</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
             </div>
             <a href="#!">
                 <div class="card-body">
                     <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                             src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
                     </div>
                     <p class="text-secondary">{{ classroom.description }}</p>
                 </div>
@@ -86,14 +103,15 @@
 </div>
 {% endif %}
 <!-- Modal Create Class -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Створити клас</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Створити клас</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <form action="{% url 'classroom:create_classroom' %}" method="POST">
                 {% csrf_token %}
@@ -107,7 +125,7 @@
                         {{ classroom_form.description|attr:'class: form-control'|attr:'placeholder:Введіть опис' }}
                     </div>
                 </div>
-            
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
                     <button type="submit" class="btn btn-primary">Створити клас</button>
@@ -118,7 +136,8 @@
 </div>
 
 <!-- Modal Join Class -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -130,19 +149,20 @@
             <form action="{% url 'classroom:join_classroom' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
-                        <div class="form-group">
+                    <div class="form-group">
                         <label for="exampleInput">{{ join_classroom_form.code.label }}</label>
                         {{ join_classroom_form.code|attr:'class: form-control'|attr:'placeholder:Введіть код класу' }}
-                        <small id="Help" class="form-text text-muted">Попросіть у вчителя код класу, а потім введіть його тут.</small>
-                        </div>
+                        <small id="Help" class="form-text text-muted">Попросіть у вчителя код класу, а потім введіть
+                            його тут.</small>
+                    </div>
                     <ul><h5>Щоб увійти за допомогою коду класу</h5>
                         <li>Використовуйте авторизований обліковий запис</li>
                         <li>Використовуйте код класу з 5-7 літер або цифр без пробілів або символів</li>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                        <button type="submit" class="btn btn-primary">Приєднатись до класу</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Приєднатись до класу</button>
+                </div>
             </form>
         </div>
     </div>

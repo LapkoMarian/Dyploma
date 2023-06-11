@@ -9,8 +9,10 @@
     <!-- ROW -->
     <div class="row">
         <div class="col-12 ">
-            <div class="card bg-dark shadow p-3 mb-3 bg-white rounded">
-                <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" height="175" class="card-img" alt="...">
+            <div class="card bg-dark p-3 mb-3 bg-white shadow-sm">
+                <div >
+                <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" height="100" class="float-right" alt="...">
+                </div>
                 <div class="card-img-overlay">
                     <h1 class="card-title"><b>{{ classroom.name }}</b></h1>
                     <p class="card-text">{{ classroom.description }}</p>

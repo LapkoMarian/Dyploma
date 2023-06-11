@@ -8,7 +8,7 @@
         <div class="panel-section">
             <h2>Розклад уроків</h2>
         {% if request.user.profile.is_teacher %}
-            <table border="1">
+            <table class="table table-bordered">
                     <tr>
                         <th colspan="6" class="n" style="text-align: center">{{ request.user.last_name }} {{ request.user.first_name }}</th>
                     </tr>
@@ -37,7 +37,7 @@
                 {% endfor %}
             </table>
         {% elif request.user.profile.is_student %}
-            <table border="1">
+            <table class="table table-bordered">
                 {% for form in forms %}
                     <tr>
                         <th colspan="6" class="n" style="text-align: center">{{ form.class_name }}</th>
