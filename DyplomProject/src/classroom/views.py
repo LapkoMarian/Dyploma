@@ -76,8 +76,9 @@ def open_classroom(request, pk):
 
         post_form = PostForm()
         comment_form = CommentCreateForm()
-
         context = {
+            'teachers': classroom.classroomteachers_set.all(),
+            'students': classroom.users.all(),
             'classroom': classroom,
             'contents': reversed(contents),
             'post_form': post_form,
