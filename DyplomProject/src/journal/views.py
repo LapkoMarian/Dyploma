@@ -13,5 +13,5 @@ def view_list_group(request):
     else:
         pass
 
-    rating = Journal.get_rating()
+    rating = Journal.get_rating(student_id= request.user.id)
     return render(request, 'journal/group_list.html', context={'rating': rating})

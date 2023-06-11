@@ -5,6 +5,7 @@ from classroom.models import ClassroomUsers
 
 
 class Rating(models.IntegerChoices):
+    dont_visited = 0
     one = 1
     two = 2
     three = 3
@@ -27,20 +28,24 @@ class Journal(models.Model):
     mark = models.CharField(max_length=20)
     topik = models.CharField(max_length=200)
 
+    class Meta:
+        unique_together = ('classroom_user', 'created_at')
+
     @staticmethod
-    def get_rating():
+    def get_rating(student_id: int):
         with connection.cursor() as cursor:
-            sql_query = """
-            SELECT j.id , j.rating, j.created_at, j.mark, j.topik, t.last_name ||' '||t.first_name as techer, classroom.name
-            FROM journal_journal as j
-            INNER JOIN auth_user as t
-                ON t.id = j.created_by_id
-            INNER JOIN classroom_classroom_users as classroom_users
-                ON classroom_users.id = j.classroom_user_id
-            INNER JOIN auth_user as student
-                ON student.id = classroom_users.user_id
-            INNER JOIN classroom_classroom as classroom
-                ON classroom.id = classroom_users.classroom_id
+            sql_query = f"""
+                SELECT j.id , j.rating, j.created_at, j.mark, j.topik, t.last_name ||' '||t.first_name as techer, classroom.name
+                FROM journal_journal as j
+                INNER JOIN auth_user as t
+                    ON t.id = j.created_by_id
+                INNER JOIN classroom_classroom_users as classroom_users
+                    ON classroom_users.id = j.classroom_user_id
+                INNER JOIN auth_user as student
+                    ON student.id = classroom_users.user_id
+                INNER JOIN classroom_classroom as classroom
+                    ON classroom.id = classroom_users.classroom_id
+                WHERE student.id = {student_id}
             """
             cursor.execute(sql_query)
             results = Journal.dict_fetchall(cursor)

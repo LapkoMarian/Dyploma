@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Список класів{% endblock %}
+{% block title %}Журнал{% endblock %}
 
 {% block content %}
-<h1>Список журналів по навчальних класах</h1>
+<h1>Журнал</h1>
 <!--<ul>-->
 <!--    {% for item in rating %}-->
 <!--    <li>{{ item }}</li>-->
@@ -29,7 +29,7 @@
         <td>{{item.mark}}</td>
         <td>{{item.topik}}</td>
         <td>{{item.created_at}}</td>
-        <td>{{item.rating}}</td>
+        <td>{% if item.rating == 0 %} <b>н/н</b> {% else %} {{item.rating}} {% endif%}</td>
         <td>{{item.techer}}</td>
     </tr>
     {% endfor %}
