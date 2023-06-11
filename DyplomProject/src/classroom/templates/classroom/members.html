@@ -37,10 +37,10 @@
     </div>
     <hr>
 
-    {% for student in students %}
+    {% for student in students|dictsort:"last_name" %}
       <div class="row">
         <img width="25px" height="25px" class="img-profile rounded-circle" src="{{ student.profile.image.url }}" style="margin-left: 15px">
-        <p class="text-dark" style="margin-left: 10px">{{ student.first_name }} {{ student.last_name }}</p>
+        <p class="text-dark" style="margin-left: 10px">{{ student.last_name }} {{ student.first_name }}</p>
       </div>
     {% endfor %}
 </div>
