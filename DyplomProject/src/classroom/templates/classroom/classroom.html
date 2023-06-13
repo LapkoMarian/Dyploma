@@ -9,17 +9,16 @@
     <!-- ROW -->
     <div class="row">
         <div class="col-12 ">
-            <div class="card bg-dark p-3 mb-3 bg-white shadow-sm">
-                <div >
+            <div class="card bg-dark p-5 mb-3 bg-white shadow-sm">
+                <div>
                 <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" height="100" class="float-right" alt="...">
                 </div>
                 <div class="card-img-overlay">
                     <h1 class="card-title"><b>{{ classroom.name }}</b></h1>
                     <p class="card-text">{{ classroom.description }}</p>
-                    {% if request.user.profile.is_teacher %}
-                        <input type="text" value="{{ classroom.classroom_code }}" id="classroom-code" readonly>
-                        <button class="btn btn-sm btn-outline-primary" onclick="copyCode()">Copy</button>
-                    {% endif %}
+                    Код класу
+                    <input type="text" value="{{ classroom.classroom_code }}" id="classroom-code" readonly>
+                    <button class="btn btn-sm btn-outline-primary" onclick="copyCode()">Копіювати</button>
                 </div>
             </div>
         </div>
@@ -47,7 +46,7 @@
                                             {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Опис" }}
                                         </div>
                                         <div class="float-left">
-                                            {{ post_form.file_field }}
+                                            {{ post_form.file_field|attr:"multiple:multiple" }}
                                         </div>
                                         <button type="submit" class="btn btn-sm btn-primary m-1 pl-3 pr-3 float-right">
                                             Опублікувати
@@ -64,39 +63,6 @@
                         <!-- END COL -->
                         <!-- COL -->
                         {% for content in contents %}
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Створити клас</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                        </div>
-                                        <form action="{% url 'posts:edit_post' content.pk %}" method="POST"
-                                              enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div class="form-group">
-                                                <label for="exampleInput">Назва</label>
-                                                {{ post_form.title|attr:"class:form-control"|attr:"placeholder:Назва" }}
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exam">Опис</label>
-                                                {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Опис" }}
-                                            </div>
-                                            <div class="float-left">
-                                                {{ post_form.file_field }}
-                                            </div>
-                                            <button type="submit" class="btn btn-sm btn-primary m-1 pl-3 pr-3 float-right">
-                                                Опублікувати
-                                            </button>
-                                            <button id="cancel-post" class="btn btn-sm btn-outline-dark m-1 float-right">
-                                                Скасувати
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-12">
                                 <!-- CARD -->
                                 <div class="card shadow-sm mt-3">
@@ -112,27 +78,28 @@
                                         <div class="container">
                                             {% if content.content_type == 'post' %}
                                                 <h4 class="text-primary">{{ content.title }}</h4>
-                                                <div class="dropdown no-arrow ml-auto">
-                                                      <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <div class="dropdown no-arrow float-right" style="top: -30px">
+                                                      <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
                                                       </a>
                                                       <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                                            <a class="dropdown-item" href="{% url 'posts:edit_post' content.pk %}">
-                                                                <i class="fas fa-edit"></i>
-                                                                <span>Редагувати пост</span>
-                                                            </a>
-                                                            <a class="dropdown-item" href="{% url 'posts:delete_post' content.pk %}">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                                <span>Видалити пост</span>
-                                                            </a>
+                                                          <a class="dropdown-item" href="{% url 'posts:edit_post' content.pk %}">
+                                                              <i class="fas fa-edit"></i>
+                                                              Редагувати пост
+                                                          </a>
+                                                          <a class="dropdown-item" href="{% url 'posts:delete_post' content.pk %}">
+                                                              <i class="fas fa-trash-alt"></i>
+                                                              <span>Видалити пост</span>
+                                                          </a>
                                                       </div>
                                                 </div>
                                             {% else %}
                                                 <a href="{% url 'classroom:assignment_submit' content.pk %}"><h4
                                                         class="text-primary">{{ content.title }}</h4></a>
                                             {% endif %}
-                                            <h6>Опубліковано {{ content.created_at }}
-                                                Автор {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
+                                            <h6>Опубліковано: {{ content.created_at }}
+                                                <i class="fas fa-circle fa-xs"></i>
+                                                Автор: {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
                                             <hr>
                                             <h5>{{ content.description }}</h5>
                                             <p>

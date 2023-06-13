@@ -145,14 +145,14 @@ def assignment_create(request):
             return redirect('classroom:open_classroom', topic.classroom.pk)
 
     else:
-        form = AssignmentCreateForm(request.user)
+        form = AssignmentCreateForm(request.user, request.GET)
     context = {'form': form}
     return render(request, 'classroom/assignment_create.html', context)
 
 
 @login_required
 def assignment_submit(request, pk):
-    if request.method=='POST':
+    if request.method == 'POST':
         assignment = get_object_or_404(Assignment,pk=pk)
         submitted_assignment = assignment.submittedassignment_set.filter(user = request.user).first()
         if not submitted_assignment:
@@ -188,7 +188,15 @@ def assignment_submit(request, pk):
 def assignment_edit(request, pk):
     assignment = get_object_or_404(Assignment, pk=pk)
     if request.method == 'POST':
-        form = AssignmentCreateForm(request.user, request.POST, request.FILES)
+        form = AssignmentCreateForm(user=request.user, data=request.POST, files=request.FILES,
+                                    initial={'title': assignment.title,
+                                             'description': assignment.description,
+                                             'topics': assignment.topic.pk,
+                                             'due_date': assignment.due_date.strftime(
+                                                '%Y-%m-%dT%H:%M'),
+                                             'classrooms': assignment.topic.classroom.pk,
+                                             'points': assignment.marks})
+
         if form.is_valid():
             topic = get_object_or_404(Topic, pk=int(form.cleaned_data['topics']))
             assignment.title = form.cleaned_data['title']
@@ -206,25 +214,24 @@ def assignment_edit(request, pk):
         form = AssignmentCreateForm(user=request.user, initial={'title': assignment.title,
                                                                 'description': assignment.description,
                                                                 'topics': assignment.topic.pk,
-                                                                'due_date': assignment.due_date,
+                                                                'due_date': assignment.due_date.strftime('%Y-%m-%dT%H:%M'),
                                                                 'classrooms': assignment.topic.classroom.pk,
                                                                 'points': assignment.marks})
-        print(assignment.due_date)
     context = {'form': form, 'assignment': assignment}
     return render(request, 'classroom/assignment_edit.html', context)
 
 
 @login_required
-@permission_required("classroom.delete_assignment", raise_exception=True)
+@permission_required("posts.delete_assignment", raise_exception=True)
 def assignment_delete(request, pk):
-    classroom = get_object_or_404(Classroom, pk=pk)
     assignment = get_object_or_404(Assignment, pk=pk)
-    if request.user in [clt.teacher for clt in classroom.classroomteachers_set.all()]:
+    topic = get_object_or_404(Topic, pk=assignment.topic.pk)
+    if request.user in [clt.teacher for clt in topic.classroom.classroomteachers_set.all()]:
         assignment.delete()
         messages.success(request, f'Завдання успішно видалено.')
     else:
         messages.error(request, f'Ви не можете видалити завдання! Це може зробити тільки вчитель!')
-    return redirect('classroom:open_classroom', classroom.pk)
+    return redirect('classroom:open_classroom', topic.classroom.pk)
 
 
 @login_required

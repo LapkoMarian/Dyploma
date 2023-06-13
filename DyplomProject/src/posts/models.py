@@ -29,11 +29,6 @@ class Post(models.Model):
     def post_comment(self):
         return list(self.comment_set.all())
 
-    @staticmethod
-    def check_post_exists(pk):
-        post_exists = Post.objects.filter(pk=pk).exists()
-        return post_exists
-
 
 class Assignment(models.Model):
     title = models.CharField(max_length=250)
@@ -103,7 +98,7 @@ class SubmittedAssignment(models.Model):
 
 class AssignmentFile(models.Model):
     files = models.FileField(upload_to='classroom/assignments/')
-    submitted_assignment  =  models.ForeignKey(SubmittedAssignment, on_delete=models.CASCADE)
+    submitted_assignment = models.ForeignKey(SubmittedAssignment, on_delete=models.CASCADE)
 
     @property
     def filename(self):

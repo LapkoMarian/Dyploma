@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Classroom
+from posts.models import Assignment
 
 
 class ClassroomCreationForm(ModelForm):
@@ -37,9 +38,9 @@ class AssignmentCreateForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea)
     classrooms = forms.ChoiceField()
     topics = forms.ChoiceField()
-    points = forms.IntegerField(min_value=0, max_value=100)
+    points = forms.IntegerField(min_value=0, max_value=12)
     due_date = forms.DateTimeField()
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
 
 

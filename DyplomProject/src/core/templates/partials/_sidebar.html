@@ -21,21 +21,13 @@
     </li>
 
     {% if 'open' in request.path %}
-        <li class="nav-item">
-           <a class="nav-link" href="{% url 'classroom:members_classroom' classroom.pk %}">
-               <i class="fas fa-fw fa-users"></i>
-               <span>Учасники класу {{ classroom.name }}</span>
-           </a>
+       <li class="nav-item">
+          <a class="nav-link" href="{% url 'classroom:classwork' classroom.pk %}">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Всі завдання класу {{ classroom.name }}</span>
+          </a>
        </li>
     {% endif %}
-{#    {% if 'open' in request.path %}#}
-{#        <li class="nav-item">#}
-{#           <a class="nav-link" href="{% url 'classroom:classwork' classroom.pk %}">#}
-{#               <i class="fas fa-fw fa-folder"></i>#}
-{#               <span>Всі завдання класу {{ classroom.name }}</span>#}
-{#           </a>#}
-{#       </li>#}
-{#    {% endif %}#}
 
     {% if request.user.profile.is_teacher %}
     <li class="nav-item">
