@@ -27,7 +27,7 @@ class Post(models.Model):
     
     @property
     def post_comment(self):
-        return list(self.comment_set.all())
+        return list(self.postcomment_set.all())
 
 
 class Assignment(models.Model):
@@ -57,7 +57,7 @@ class Assignment(models.Model):
     
     @property
     def comments(self):
-        return list(self.privatecomment_set.all())
+        return list(self.assignmentcomment_set.all())
     
     @property
     def submitted_assignments(self):

@@ -25,7 +25,7 @@ def create_post(request, pk):
             
             messages.success(request, f'Створено пост {title}')
         else:
-            messages.danger(request, f'Не створено пост')
+            messages.warning(request, f'Не створено пост')
     
     return redirect('classroom:open_classroom', pk)
 
@@ -38,31 +38,29 @@ def edit_post(request, pk):
         if request.method == 'POST':
             form = PostForm(data=request.POST, files=request.FILES,
                             initial={'title': post.title,
-                                     'description': post.description,
-                                     'file_field': post.resources.filter(pk=pk)})
+                                     'description': post.description})
 
             if form.is_valid():
                 post.title = form.cleaned_data.get('title')
                 post.description = form.cleaned_data.get('description')
                 post.save()
                 files = request.FILES.getlist('file_field')
+                if form.cleaned_data.get('owerride_files'):
+                    for resource in post.resources:
+                        resource.delete()
                 for f in files:
-                    Resource.objects.update(post=post, files=f)
+                    Resource.objects.create(post=post, files=f)
 
                 messages.success(request, f'Відредаговано пост {post.title}')
                 return redirect('classroom:open_classroom', post.topic.classroom.pk)
             else:
-                messages.danger(request, f'Не відредаговано пост')
+                messages.error(request, f'Не відредаговано пост')
         else:
-            files = MultiValueDict({'file_field': post.resources})
-            print(files)
-            print(post.resources)
-            form = PostForm(initial={'title': post.title, 'description': post.description, 'file_field': post.resources})
-            print(initial={'title': post.title, 'description': post.description, 'file_field': post.resources})
+            form = PostForm(initial={'title': post.title, 'description': post.description})
         context = {'form': form, 'post': post}
         return render(request, 'classroom/edit_post.html', context)
     else:
-        messages.error(request, f'Ви не можете редагувати цей пост! Це може зробити тільки автор цього поста!')
+        messages.warning(request, f'Ви не можете редагувати цей пост! Це може зробити тільки автор цього поста!')
     return redirect('classroom:open_classroom', post.topic.classroom.pk)
 
 
@@ -74,17 +72,5 @@ def delete_post(request, pk):
         post.delete()
         messages.success(request, f'Пост успішно видалено.')
     else:
-        messages.error(request, f'Ви не можете видалити цей пост! Це може зробити тільки автор цього поста!')
-    return redirect('classroom:open_classroom', post.topic.classroom.pk)
-
-
-@login_required
-@permission_required("posts.delete_resource", raise_exception=True)
-def delete_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.user == post.created_by:
-        Resource.objects.update(post=post)
-        messages.success(request, f'Пост успішно видалено.')
-    else:
-        messages.error(request, f'Ви не можете видалити цей пост! Це може зробити тільки автор цього поста!')
+        messages.warning(request, f'Ви не можете видалити цей пост! Це може зробити тільки автор цього поста!')
     return redirect('classroom:open_classroom', post.topic.classroom.pk)

@@ -42,7 +42,7 @@ def create_classroom(request):
             classroom_teachers.save()
             messages.success(request, f'Classroom {name} created !')
         else:
-            messages.danger(request, f'Classroom Could not be created :(')
+            messages.warning(request, f'Classroom Could not be created :(')
     return redirect('classroom:home')
 
 
@@ -56,9 +56,9 @@ def join_classroom(request):
                 request.user.classrooms.add(classroom)
                 messages.success(request, f'You are added in {classroom.name}')
             else:
-                messages.success(request, f'Error adding you to the classroom')
+                messages.warning(request, f'Помилка приєднання вас до класу')
         else:
-            messages.success(request, f'Error adding you to the classroom')
+            messages.warning(request, f'Помилка приєднання вас до класу')
     return redirect('classroom:home')
 
 
@@ -86,7 +86,7 @@ def open_classroom(request, pk):
         }
 
         return render(request, 'classroom/classroom.html', context)
-    messages.error(request, f'Ви не є учасником цього класу!')
+    messages.warning(request, f'Ви не є учасником цього класу!')
     return redirect('classroom:home')
 
 
@@ -97,7 +97,7 @@ def leave_classroom(request, pk):
         request.user.classrooms.remove(classroom)
         messages.success(request, f'Ви покинули клас!')
     else:
-        messages.error(request, f'Ви не є учасником цього класу!')
+        messages.warning(request, f'Ви не є учасником цього класу!')
 
     return redirect('classroom:home')
 
@@ -110,7 +110,7 @@ def delete_classroom(request, pk):
         classroom.delete()
         messages.success(request, f'Клас успішно видалено.')
     else:
-        messages.error(request, f'Ви не можете видалити клас! Це може зробити тільки вчитель!')
+        messages.warning(request, f'Ви не можете видалити клас! Це може зробити тільки вчитель!')
     return redirect('classroom:home')
 
 
@@ -142,8 +142,8 @@ def assignment_create(request):
             files = request.FILES.getlist('file_field')
             for f in files:
                 Attachment.objects.create(assignment = assignment,files=f)
+                messages.success(request, f'Завдання успішно створено!')
             return redirect('classroom:open_classroom', topic.classroom.pk)
-
     else:
         form = AssignmentCreateForm(request.user, request.GET)
     context = {'form': form}
@@ -160,8 +160,10 @@ def assignment_submit(request, pk):
         files = request.FILES.getlist('file_field')
         for f in files:
             AssignmentFile.objects.create(submitted_assignment = submitted_assignment,files=f)
+        messages.success(request, f'Завдання успішно подано на перевірку!')
     
     form = AssignmentFileForm()
+    comment_form = CommentCreateForm()
     assignment = get_object_or_404(Assignment, pk=pk)
     submit_assignment = assignment.submittedassignment_set.filter(user=request.user)
     classroom_teachers = list(map(lambda teaches: teaches.teacher, assignment.topic.classroom.classroomteachers_set.all()))
@@ -178,6 +180,7 @@ def assignment_submit(request, pk):
         'submitted_assignment': submit_assignment,
         'assignment_files': assignment_files,
         'form': form,
+        'comment_form': comment_form,
         'is_teacher': is_teacher,
     }
     return render(request, 'classroom/assignment_submit.html', context)
@@ -204,8 +207,10 @@ def assignment_edit(request, pk):
             assignment.topic = topic
             assignment.due_date = form.cleaned_data['due_date']
             assignment.save()
-            # Опціонально, обробка завантажених файлів
             files = request.FILES.getlist('file_field')
+            if form.cleaned_data.get('owerride_files'):
+                for resource in assignment.resources:
+                    resource.delete()
             for f in files:
                 Attachment.objects.create(assignment=assignment, files=f)
             messages.success(request, f'Завдання успішно відредаговано.')
@@ -230,7 +235,7 @@ def assignment_delete(request, pk):
         assignment.delete()
         messages.success(request, f'Завдання успішно видалено.')
     else:
-        messages.error(request, f'Ви не можете видалити завдання! Це може зробити тільки вчитель!')
+        messages.warning(request, f'Ви не можете видалити завдання! Це може зробити тільки вчитель!')
     return redirect('classroom:open_classroom', topic.classroom.pk)
 
 

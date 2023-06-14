@@ -35,22 +35,30 @@
                 {{ form.file_field|attr:"class:choose" }}
             </div>
             <div class="col-6">
-            <div class="card mb-3 ml-2">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                    <img src="{% static 'mainapp/img/file.png' %}" class="card-img img-fluid d-none d-lg-block" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                    <div class="card-body">
-                        <div class="form-group">
-                        <h5 class="card-title "><a target="_blank">{{ form.file_field|attr:"class:choose" }}...</a>
-                        </h5>
+                <h5 for="files">Файли поста</h5>
+                <div class="form-group">
+                    <label>Перезаписати файли?</label>
+                    {{ form.owerride_files }}
+                </div>
+                {% for resource in assignment.resources %}
+                <div class="card mb-3 ml-2">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="{% static 'mainapp/img/file.png' %}"
+                                 class="card-img"
+                                 alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title "><a target="_blank"
+                                                           href="{{ resource.files.url }}">{{ resource.filename|truncatechars:25 }}</a>
+                                </h5>
+                            </div>
                         </div>
                     </div>
-                    </div>
                 </div>
+                {% endfor %}
             </div>
-        </div>
         </div>
         <div class="col-lg-4 vl v p-3 mt-sm-2">
             <!-- For -->

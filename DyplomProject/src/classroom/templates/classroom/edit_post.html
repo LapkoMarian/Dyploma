@@ -34,23 +34,30 @@
             <div class="form-group">
                 {{ form.file_field|attr:"class:choose" }}
             </div>
-            <div class="col-6">
+            <div class="col-12">
+                <h5 for="files">Файли поста</h5>
+                <div class="form-group">
+                    <label>Перезаписати файли?</label>
+                    {{ form.owerride_files }}
+                </div>
+                {% for resource in post.resources %}
                 <div class="card mb-3 ml-2">
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             <img src="{% static 'mainapp/img/file.png' %}"
-                                 class="card-img img-fluid d-none d-lg-block"
+                                 class="card-img"
                                  alt="...">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title "><a target="_blank"
-                                                           href="{{ resource.post.files.url }}">{{ resource.post.filename }}...</a>
+                                                           href="{{ resource.files.url }}">{{ resource.filename|truncatechars:25 }}</a>
                                 </h5>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

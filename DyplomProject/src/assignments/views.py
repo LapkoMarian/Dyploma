@@ -6,6 +6,7 @@ from classroom.models import Classroom
 
 from .forms import GradeStudentForm
 
+
 @login_required
 def view_grades(request,pk):
     assignment = get_object_or_404(Assignment,pk=pk)
@@ -27,8 +28,6 @@ def grade(request,pk):
             submit_assignment.is_reviewed = True
             submit_assignment.grade = grade 
             submit_assignment.save()
-        else:
-            print('not valid')
     else:
         grade_form = GradeStudentForm() 
             

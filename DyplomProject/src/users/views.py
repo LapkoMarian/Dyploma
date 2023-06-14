@@ -21,10 +21,10 @@ def register(request):
             student_group.user_set.add(user)
             student_group.save()
             Profile.objects.create(user=user)
-            messages.success(request, f'Account Created Successfully for {username}')
+            messages.success(request, f'Обліковий запис успішно створено для {username}')
             return redirect('users:login')
         else:
-            messages.success(request, f'Error Setting up the account')
+            messages.warning(request, f'Помилка реєстрації облікового запису')
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form':form})
@@ -43,7 +43,7 @@ def profile(request):
             if 'image' in request.FILES:
                 profile.image = request.FILES['image']
             profile.save()
-            messages.success(request, f"Profile Updated !")
+            messages.success(request, f"Профіль оновлено !")
             return redirect('users:profile')
     else:
         user_form = UserUpdateForm(instance=request.user)

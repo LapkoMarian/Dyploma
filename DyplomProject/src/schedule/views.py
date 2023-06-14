@@ -8,13 +8,10 @@ from users.models import StudentsForm
 @login_required
 def view_schedule(request):
     forms = []
-    print(request.user.profile.is_student())
     if request.user.profile.is_student():
-        print(request.user.profile.is_student())
         students_form = StudentsForm.objects.get(user=request.user)
         schedules = Schedule.objects.filter(class_name=students_form.form).all()
         forms = Form.objects.filter(class_name=students_form.form).all()
-        print(schedules)
     elif request.user.profile.is_teacher():
         schedules = Schedule.objects.filter(teacher=request.user).all()
     weekdays = Weekday.objects.all()

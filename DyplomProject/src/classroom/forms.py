@@ -18,6 +18,7 @@ class PostForm(forms.Form):
     title = forms.CharField()
     description = forms.CharField(widget=forms.Textarea)
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    owerride_files = forms.BooleanField(widget=forms.CheckboxInput, required=False)
 
 
 class AssignmentFileForm(forms.Form):
@@ -41,6 +42,7 @@ class AssignmentCreateForm(forms.Form):
     points = forms.IntegerField(min_value=0, max_value=12)
     due_date = forms.DateTimeField()
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    owerride_files = forms.BooleanField(widget=forms.CheckboxInput, required=False)
 
 
 

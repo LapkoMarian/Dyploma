@@ -89,7 +89,7 @@
                                                           </a>
                                                           <a class="dropdown-item" href="{% url 'posts:delete_post' content.pk %}">
                                                               <i class="fas fa-trash-alt"></i>
-                                                              <span>Видалити пост</span>
+                                                              Видалити пост
                                                           </a>
                                                       </div>
                                                 </div>
@@ -98,15 +98,17 @@
                                                         class="text-primary">{{ content.title }}</h4></a>
                                             {% endif %}
                                             <h6>Опубліковано: {{ content.created_at }}
+                                                {% if content.content_type == 'post' %}
                                                 <i class="fas fa-circle fa-xs"></i>
                                                 Автор: {{ content.created_by.first_name }} {{ content.created_by.last_name }}</h6>
                                             <hr>
                                             <h5>{{ content.description }}</h5>
                                             <p>
+                                            {% endif %}
                                         </div>
                                         <!-- End Container -->
                                         <!-- CARD -->
-
+                                        {% if content.content_type == 'post' %}
                                         <div class="row">
                                             {% for resource in content.resources %}
                                                 <div class="col-6">
@@ -114,7 +116,7 @@
                                                         <div class="row no-gutters">
                                                             <div class="col-md-4">
                                                                 <img src="{% static 'mainapp/img/file.png' %}"
-                                                                     class="card-img img-fluid d-none d-lg-block"
+                                                                     class="card-img img-fluid d-none d-lg-block my-md-2"
                                                                      alt="...">
                                                             </div>
                                                             <div class="col-md-8">
@@ -129,11 +131,11 @@
                                                 </div>
                                             {% endfor %}
                                         </div>
+                                        {% endif %}
 
                                         {% if content.content_type == 'post' %}
                                             <div class="card-body">
                                                 {% for comment in content.post_comment %}
-                                                    <hr>
                                                     <div class="d-flex flex-row">
                                                         <img src="{{ comment.user.profile.image.url }}" width="35"
                                                              height="35" alt="..." class="rounded-circle mr-2">
@@ -145,7 +147,7 @@
                                             </div>
                                             <hr>
                                             <div class="card-body">
-                                                <form action="{% url 'comments:create_comment' content.pk %}"
+                                                <form action="{% url 'comments:create_post_comment' content.pk %}"
                                                       method="post">
                                                     <div class="input-group">
                                                         <img src="{{ request.user.profile.image.url }}" width="35"
