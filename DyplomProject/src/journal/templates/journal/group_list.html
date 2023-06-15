@@ -15,8 +15,7 @@
     <thead>
     <tr>
         <th>Заняття</th>
-        <th>Мітка</th>
-        <th>Тема Заняття</th>
+        <th>Тема Уроку</th>
         <th>Дата</th>
         <th>Оцінка</th>
         <th>Вчитель</th>
@@ -26,11 +25,10 @@
     {% for item in rating %}
     <tr>
         <td>{{item.name}}</td>
-        <td>{{item.mark}}</td>
         <td>{{item.topik}}</td>
         <td>{{item.created_at}}</td>
-        <td>{% if item.rating == 0 %} <b>н/н</b> {% else %} {{item.rating}} {% endif%}</td>
-        <td>{{item.techer}}</td>
+        <td>{% if item.rating == 0 %} <b>н/н</b> {% elif item.rating == 13 %} <b></b> {% else %} {{item.rating}} {% endif%}</td>
+        <td>{{item.teacher}}</td>
     </tr>
     {% endfor %}
     </tbody>

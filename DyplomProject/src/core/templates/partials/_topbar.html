@@ -73,11 +73,6 @@
             </a>
             {% endif %}
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'schedule:schedule' %}">
-                <span>Зміни в розкладі</span>
-            </a>
-        </li>
         {% if request.path == '/schedule/calls/' %}
         <li class="nav-item">
             <a class="nav-link border-bottom-primary" href="{% url 'schedule:calls' %}">

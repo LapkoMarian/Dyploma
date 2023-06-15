@@ -6,7 +6,7 @@ import random
 
 
 class Classroom(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     classroom_code = models.CharField(max_length=20, blank=True)
     description = models.TextField(max_length=300)
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -35,7 +35,7 @@ class ClassroomUsers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user.username} -> {self.classroom.name}'
+        return f'{self.user.first_name} {self.user.last_name} -> {self.classroom.name}'
 
     class Meta:
         db_table = "classroom_classroom_users"

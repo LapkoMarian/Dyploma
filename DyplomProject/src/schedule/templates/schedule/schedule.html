@@ -10,7 +10,7 @@
         {% if request.user.profile.is_teacher %}
             <table class="table table-bordered">
                     <tr>
-                        <th colspan="6" class="n" style="text-align: center">{{ request.user.last_name }} {{ request.user.first_name }}</th>
+                        <th colspan="6" class="n" style="text-align: center">Вчитель: {{ request.user.last_name }} {{ request.user.first_name }}</th>
                     </tr>
                 <tr>
                     <th></th>
@@ -27,7 +27,7 @@
                                 {% for schedule in schedules %}
                                     {% if schedule.days == weekday %}
                                         {% if schedule.number_lesson == call %}
-                                            <span>{{ schedule.name_lesson }} <p>Клас: {{ schedule.class_name }}</span>
+                                <span>{{ schedule.name_lesson }} <p><br><strong>Клас:</strong> {{ schedule.class_name }}</span>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -58,7 +58,7 @@
                                 {% for schedule in schedules %}
                                     {% if schedule.days == weekday %}
                                         {% if schedule.number_lesson == call %}
-                                            <span>{{ schedule.name_lesson }} <p>Вчитель: {{ schedule.teacher.first_name }} {{ schedule.teacher.last_name }}</span>
+                                <span>{{ schedule.name_lesson }} <p><br><strong>Вчитель:</strong> {{ schedule.teacher.first_name }} {{ schedule.teacher.last_name }}</span>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}

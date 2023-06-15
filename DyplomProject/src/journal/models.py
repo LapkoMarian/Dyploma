@@ -18,6 +18,7 @@ class Rating(models.IntegerChoices):
     ten = 10
     eleven = 11
     twelve = 12
+    dont_rating = 13
 
 
 class Journal(models.Model):
@@ -25,7 +26,6 @@ class Journal(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     created_at = models.DateField(default=timezone.now)
     classroom_user = models.ForeignKey(ClassroomUsers, on_delete=models.CASCADE)
-    mark = models.CharField(max_length=20)
     topik = models.CharField(max_length=200)
 
     class Meta:
@@ -35,7 +35,7 @@ class Journal(models.Model):
     def get_rating(student_id: int):
         with connection.cursor() as cursor:
             sql_query = f"""
-                SELECT j.id , j.rating, j.created_at, j.mark, j.topik, t.last_name ||' '||t.first_name as techer, classroom.name
+                SELECT j.id , j.rating, j.created_at, j.topik, t.last_name ||' '||t.first_name as teacher, classroom.name
                 FROM journal_journal as j
                 INNER JOIN auth_user as t
                     ON t.id = j.created_by_id
@@ -50,6 +50,9 @@ class Journal(models.Model):
             cursor.execute(sql_query)
             results = Journal.dict_fetchall(cursor)
         return results
+
+    def __str__(self):
+        return f'{self.classroom_user} -> {self.topik}'
 
     @staticmethod
     def dict_fetchall(cursor):

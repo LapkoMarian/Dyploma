@@ -11,12 +11,18 @@
     </div>
     <div class="card-img-overlay">
         <h1 class="card-title"><b>Мої Класи</b></h1>
-        <a data-toggle="modal" data-target="#exampleModal" href="#">
-            Приєднатись до класу
-        </a>
+        {% if request.user.profile.is_teacher %}
+            <a data-toggle="modal" data-target="#exampleModalCenter" href="#">
+                Створити клас
+            </a>
+        {% else %}
+            <a data-toggle="modal" data-target="#exampleModal" href="#">
+                Приєднатись до класу
+            </a>
+        {% endif %}
     </div>
 </div>
-{% if teaching_classes %}
+{% if request.user.profile.is_teacher %}
 <h1 class="h3 mb-4 text-gray-800">Я вчитель</h1>
 <!-- ROW  -->
 <div class="row">
