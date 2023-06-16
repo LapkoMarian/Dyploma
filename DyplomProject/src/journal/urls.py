@@ -4,5 +4,6 @@ from . import views
 app_name = 'journal'
 
 urlpatterns = [
-    path('', views.view_list_group, name='view_list'),
+    path('', views.view_journal_list, name='view_list'),
+    path('<int:classroom_id>', views.view_journal, name='view_teacher_journal'),
 ]

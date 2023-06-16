@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Журнал{% endblock %}
+
+{% block content %}
+<h1>Журнал</h1>
+<!--<ul>-->
+<!--    {% for item in students_list %}-->
+<!--    <li>{{ item }}</li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+
+<form action="" method="get">
+    <label for="start_date">Start date:</label>
+    <input type="date" id="start_date"  name="start_date" required>
+    <input type="submit" value="Go">
+</form>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+        {% for item in students_list.0.rating %}
+        <th>{{item.0}}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students_list %}
+    <tr>
+        <td width="20px">{{ forloop.counter }}</td>
+        <td width="200px">{{student.first_name}} {{student.last_name}}</td>
+        {% for rating in student.rating %}
+        <th class="text-center">
+            {% if rating.1.0|length > 0 %}
+            {{rating.1.0.rating}}
+            {% else %}
+            <button type="button" class="btn btn-outline-light"><i class="fas fa-plus"></i></button>
+            {% endif %}
+        </th>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

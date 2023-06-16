@@ -32,7 +32,7 @@ class Journal(models.Model):
         unique_together = ('classroom_user', 'created_at')
 
     @staticmethod
-    def get_rating(student_id: int):
+    def get_student_rating(student_id: int, classroom_id: int):
         with connection.cursor() as cursor:
             sql_query = f"""
                 SELECT j.id , j.rating, j.created_at, j.topik, t.last_name ||' '||t.first_name as teacher, classroom.name
@@ -45,7 +45,66 @@ class Journal(models.Model):
                     ON student.id = classroom_users.user_id
                 INNER JOIN classroom_classroom as classroom
                     ON classroom.id = classroom_users.classroom_id
-                WHERE student.id = {student_id}
+                WHERE student.id = {student_id} and classroom.id = {classroom_id};
+            """
+            cursor.execute(sql_query)
+            results = Journal.dict_fetchall(cursor)
+        return results
+
+    @staticmethod
+    def get_list_students_in_classroom(classroom_id: int):
+        with connection.cursor() as cursor:
+            sql_query = f"""
+                SELECT cu.id user_id, au.username, au.first_name, au.last_name
+                FROM classroom_classroom_users cu
+                INNER JOIN auth_user au ON au.id = cu.user_id 
+                WHERE cu.classroom_id = {classroom_id}
+                GROUP BY user_id
+            """
+            cursor.execute(sql_query)
+            results = Journal.dict_fetchall(cursor)
+        return results
+
+    @staticmethod
+    def get_list_student_classroom(student_id: int):
+        with connection.cursor() as cursor:
+            sql_query = f"""
+                SELECT classroom.id, classroom.name, classroom.description, classroom.created_at 
+                FROM classroom_classroom_users classroom_users 
+                INNER JOIN classroom_classroom classroom on classroom.id = classroom_users.classroom_id
+                WHERE classroom_users.user_id = {student_id};
+            """
+            print(sql_query)
+            cursor.execute(sql_query)
+            results = Journal.dict_fetchall(cursor)
+        return results
+
+    @staticmethod
+    def get_list_teacher_classroom(teacher_id: int):
+        with connection.cursor() as cursor:
+            sql_query = f"""
+                SELECT classroom.id as classroom_id, classroomteachers.teacher_id, classroom.name , classroom.classroom_code, classroom.created_at 
+                FROM classroom_classroomteachers classroomteachers
+                INNER JOIN classroom_classroom classroom on classroom.id = classroomteachers.classroom_id
+                WHERE classroomteachers.teacher_id = {teacher_id}
+                GROUP BY classroom.id
+            """
+            cursor.execute(sql_query)
+            results = Journal.dict_fetchall(cursor)
+        return results
+
+    @staticmethod
+    def get_rating_date(date: str, user_id: int, classroom_id: int):
+        with connection.cursor() as cursor:
+            sql_query = f"""
+                SELECT *
+                FROM journal_journal jj
+                INNER JOIN classroom_classroom_users cu 
+                    on cu.id = jj.classroom_user_id 
+                WHERE 
+                    jj.created_at = '{date}' AND
+                    cu.user_id = {user_id} AND
+                    cu.classroom_id = {classroom_id};
             """
             cursor.execute(sql_query)
             results = Journal.dict_fetchall(cursor)
@@ -64,3 +123,15 @@ class Journal(models.Model):
             results.append(dict(zip(columns, row)))
 
         return results
+
+
+"""
+SELECT *
+FROM journal_journal jj
+INNER JOIN classroom_classroom_users cu 
+	on cu.id = jj.classroom_user_id 
+WHERE 
+	jj.created_at >= '2023-06-18' AND
+	jj.created_at <= '2023-06-19' AND
+	cu.user_id = 14
+"""

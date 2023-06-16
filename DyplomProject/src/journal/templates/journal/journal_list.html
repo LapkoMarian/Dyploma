@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Журнал{% endblock %}
+
+{% block content %}
+<h1>Список журналів класів</h1>
+
+<!--{{user.id}}-->
+<!--is_teacher:{{user.profile.is_teacher}}-->
+<!--<ul>-->
+<!--    {% for item in list_classroom %}-->
+<!--    <li>{{ item }}</li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+
+{% if user.profile.is_teacher  %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Назва предмету</th>
+        <th>Код</th>
+        <th>Дата створення</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in list_classroom %}
+    <tr>
+        <td><b><a href="{{item.classroom_id}}">{{item.name}}</a></b></td>
+        <td>{{item.classroom_code}}</td>
+        <td>{{item.created_at}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Назва предмету</th>
+        <th>Вчитель</th>
+        <th>Дата створення</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in list_classroom %}
+    <tr>
+        <td><b><a href="{{item.id}}">{{item.name}}</a></b></td>
+        <td>{{item.description}}</td>
+        <td>{{item.created_at}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}
