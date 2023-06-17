@@ -54,7 +54,7 @@ class Journal(models.Model):
     def get_list_students_in_classroom(classroom_id: int):
         with connection.cursor() as cursor:
             sql_query = f"""
-                SELECT au.id user_id, au.username, au.first_name, au.last_name
+                SELECT au.id user_id, au.username, au.first_name, au.last_name, cu.id classroom_users_id
                 FROM classroom_classroom_users cu
                 INNER JOIN auth_user au ON au.id = cu.user_id 
                 WHERE cu.classroom_id = {classroom_id}

@@ -1,5 +1,6 @@
 import datetime
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -60,22 +61,30 @@ def view_journal(request, classroom_id: int):
 
 
 @login_required
-def add_grade(request, classroom_id: int):
+def add_grade(request):
     if request.method == 'POST':
+        
         form = AddGradeForm(request.POST)
+
         if form.is_valid():
             topik = form.cleaned_data.get('topik')
             rating = form.cleaned_data.get('rating')
-            students_list = Journal.get_list_students_in_classroom(classroom_id=classroom_id)
-            grade = Journal(rating=rating, created_at='' , classroom_user="", created_by=request.user, topik=topik, )
-            grade.save()
+            created_at = form.cleaned_data.get('created_at')
+            classroom_user = form.cleaned_data.get('classroom_user')
+
+            Journal(
+                rating=rating,
+                created_at=created_at,
+                classroom_user=classroom_user,
+                created_by=request.user, topik=topik
+            ).save()
+
             messages.success(request, f'Оцінка додана!')
+
         else:
             messages.warning(request, f'Помилка додавання оцінки:(')
-    return redirect('journal:view_journal')
 
-
-
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 # def create_classroom(request):
 #     if request.method == 'POST':

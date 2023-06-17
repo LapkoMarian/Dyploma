@@ -36,12 +36,9 @@
             {% if rating.1.0|length > 0 %}
             {{rating.1.0.rating}}
             {% else %}
-            {{ classroom_id}}
-            id:{{student.user_id}}
-            date:{{rating.0}}
-            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light">
+            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light"
+                    onclick="changeRatingForm('{{rating.0}}','{{student.classroom_users_id}}')">
                 <i class="fas fa-plus"></i>
-
             </button>
             {% endif %}
         </th>
@@ -72,6 +69,9 @@
                         <label for="grade">Оцінка</label>
                         {{ add_grade_form.rating|attr:'class: form-control' }}
                     </div>
+
+                    {{ add_grade_form.created_at }}
+                    {{ add_grade_form.classroom_user }}
                 </div>
 
                 <div class="modal-footer">
@@ -82,4 +82,13 @@
         </div>
     </div>
 </div>
+
+<script>
+function changeRatingForm(created_at, classroom_user) {
+    console.log(created_at, classroom_user);
+    document.getElementById("id_created_at").value = created_at;
+    document.getElementById("id_classroom_user").value = classroom_user;
+}
+</script>
+
 {% endblock %}
