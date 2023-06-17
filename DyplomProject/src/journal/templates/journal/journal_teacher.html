@@ -36,7 +36,13 @@
             {% if rating.1.0|length > 0 %}
             {{rating.1.0.rating}}
             {% else %}
-            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light"><i class="fas fa-plus"></i></button>
+            {{ classroom_id}}
+            id:{{student.user_id}}
+            date:{{rating.0}}
+            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light">
+                <i class="fas fa-plus"></i>
+
+            </button>
             {% endif %}
         </th>
         {% endfor %}

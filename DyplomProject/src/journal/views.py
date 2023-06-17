@@ -67,7 +67,7 @@ def add_grade(request, classroom_id: int):
             topik = form.cleaned_data.get('topik')
             rating = form.cleaned_data.get('rating')
             students_list = Journal.get_list_students_in_classroom(classroom_id=classroom_id)
-            grade = Journal(rating=rating, created_at=  , classroom_user=  , created_by=request.user, topik=topik, )
+            grade = Journal(rating=rating, created_at='' , classroom_user="", created_by=request.user, topik=topik, )
             grade.save()
             messages.success(request, f'Оцінка додана!')
         else:
