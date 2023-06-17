@@ -3,14 +3,14 @@
 {% block title %}Журнал{% endblock %}
 
 {% block content %}
-<h1>Заняття {{rating.0.name}}</h1>
+<h1><b>Урок:</b> {{rating.0.name}}</h1>
 
 
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th>Тема Уроку</th>
-        <th>Дата</th>
+        <th>Тема уроку</th>
+        <th>Дата уроку</th>
         <th>Оцінка</th>
         <th>Вчитель</th>
     </tr>
@@ -20,7 +20,7 @@
     <tr>
         <td>{{item.topik}}</td>
         <td>{{item.created_at}}</td>
-        <td>{% if item.rating == 0 %} <b>н/н</b> {% elif item.rating == 13 %} <b></b> {% else %} {{item.rating}} {% endif%}
+        <td>{% if item.rating == 0 %} <b>н/н</b> {% else %} {{item.rating}} {% endif%}
         </td>
         <td>{{item.teacher}}</td>
     </tr>

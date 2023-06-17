@@ -1,26 +1,26 @@
 {% extends "base.html" %}
-
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
 {% block title %}Журнал{% endblock %}
 
 {% block content %}
 <h1>Журнал</h1>
-<!--<ul>-->
-<!--    {% for item in students_list %}-->
-<!--    <li>{{ item }}</li>-->
-<!--    {% endfor %}-->
-<!--</ul>-->
 
 <form action="" method="get">
-    <label for="start_date">Start date:</label>
-    <input type="date" id="start_date"  name="start_date" required>
-    <input type="submit" value="Go">
+    <label for="start_date">Показати оцінки закінчуючи датою:</label>
+    <div class="d-inline-block">
+        <input type="date" class="form-control" style="width: 200px" id="start_date"  name="start_date" required>
+    </div>
+    <div class="d-inline-block">
+        <input type="submit" class="btn btn-primary" value="Показати">
+    </div>
 </form>
 
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th></th>
-        <th></th>
+        <th>№</th>
+        <th>Прізвище Ім'я</th>
         {% for item in students_list.0.rating %}
         <th>{{item.0}}</th>
         {% endfor %}
@@ -36,7 +36,7 @@
             {% if rating.1.0|length > 0 %}
             {{rating.1.0.rating}}
             {% else %}
-            <button type="button" class="btn btn-outline-light"><i class="fas fa-plus"></i></button>
+            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light"><i class="fas fa-plus"></i></button>
             {% endif %}
         </th>
         {% endfor %}
@@ -44,4 +44,36 @@
     {% endfor %}
     </tbody>
 </table>
+
+<div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="gradeModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gradeModalLongTitle">Додати оцінку</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'journal:add_grade' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="topik">Тема уроку:</label>
+                        {{ add_grade_form.topik|attr:'class: form-control'|attr:"placeholder:Введіть тему уроку" }}
+                    </div>
+                    <div class="form-group">
+                        <label for="grade">Оцінка</label>
+                        {{ add_grade_form.rating|attr:'class: form-control' }}
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Додати оцінку</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

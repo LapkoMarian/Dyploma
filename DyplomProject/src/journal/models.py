@@ -18,7 +18,6 @@ class Rating(models.IntegerChoices):
     ten = 10
     eleven = 11
     twelve = 12
-    dont_rating = 13
 
 
 class Journal(models.Model):
