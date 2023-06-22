@@ -16,13 +16,13 @@
 <div class="col-12">
     <div class="accordion" id="accordionExample">
         <!-- first card -->
-        <div class="col-9 mx-auto mb-5">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create</button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'classroom:assignment_create' %}">Assignment</a>
-            </div>
-        </div>
-        <br>
+<!--        <div class="col-9 mx-auto mb-5">-->
+<!--            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Створити</button>-->
+<!--            <div class="dropdown-menu">-->
+<!--              <a class="dropdown-item" href="{% url 'classroom:assignment_create' %}">Assignment</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
         {% for assignment in assignments %}
         <div class="col-lg-9 mx-auto">
         <div class="row">
@@ -34,21 +34,20 @@
                         <i class="fas fa-clipboard"></i> 
                         <a class="text-decoration-none" href="{% url 'classroom:assignment_submit' assignment.pk %}">{{ assignment.title }}</a>
                         
-                        <em class="text-muted d-inline float-right">Due on {{ assignment.due_date }}</em>
+                        <em class="text-muted d-inline float-right">Потрібно виконати до {{ assignment.due_date }}</em>
                         </div>
                     </div>
                     </div>
 
                     <div id="collapse{{ assignment.pk }}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        <p>No due date</p>
                         <div class="row">
                             {% for resource in assignment.resources %}
                                 <div class="col-6">
                                     <div class="card mb-3 ml-2" style="max-width: 400px; max-height:100px;">
                                         <div class="row no-gutters">
                                             <div class="col-md-4">
-                                                <img src="{{ resource.files.url }}" class="card-img img-fluid d-none d-lg-block" alt="...">
+                                                <img src="{% static 'mainapp/img/file1.png' %}" style="width: 60px" class="card-img img-fluid d-none d-lg-block" alt="...">
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="card-body">
@@ -61,8 +60,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <hr class="p-2">
-                        <a href="#" class="card-link">Edit assignment</a>
                     </div>
                     </div>
                 </div>

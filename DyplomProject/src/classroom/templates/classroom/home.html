@@ -33,9 +33,11 @@
         <div class="card border-bottom-primary shadow mb-4">
             <div class="card-header py-3">
                 <a href="{% url 'classroom:open_classroom' classroom.classroom.id %}">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ classroom.classroom.name }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary" title="{{classroom.classroom.name}}">
+                        {{ classroom.classroom.name|truncatechars:20 }}
+                    </h6>
                 </a>
-                <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
+                <div class="dropdown no-arrow" style="display: flex; left: 195px; top: -20px;">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
@@ -55,7 +57,9 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                              src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
                     </div>
-                    <p class="text-secondary">{{ classroom.classroom.description }}</p>
+                    <p class="text-secondary" title="{{classroom.classroom.description}}">
+                        {{ classroom.classroom.description|truncatechars:20 }}
+                    </p>
                 </div>
             </a>
         </div>
@@ -76,9 +80,9 @@
         <div class="card border-bottom-primary shadow mb-4">
             <div class="card-header py-3">
                 <a href="{% url 'classroom:open_classroom' classroom.id %}">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ classroom.name }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary" title="{{classroom.name}}">{{ classroom.name|truncatechars:20 }}</h6>
                 </a>
-                <div class="dropdown no-arrow" style="position: absolute; right: 10px; bottom: 250px">
+                <div class="dropdown no-arrow" style="display: flex; left: 195px; top: -20px;">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
@@ -98,7 +102,7 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                              src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" alt="">
                     </div>
-                    <p class="text-secondary">{{ classroom.description }}</p>
+                    <p class="text-secondary" title="{{classroom.description}}">{{ classroom.description|truncatechars:20 }}</p>
                 </div>
             </a>
         </div>

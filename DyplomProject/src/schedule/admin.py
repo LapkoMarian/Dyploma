@@ -14,10 +14,10 @@ admin.site.register(models.Form)
 class LessonAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "teacher":
-            # Отримати queryset з користувачами, які належать до групи з ідентифікатором 1
             kwargs["queryset"] = User.objects.filter(groups__id=1)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 admin.site.register(models.Schedule, LessonAdmin)
+admin.site.register(models.ScheduleReplacement, LessonAdmin)
 

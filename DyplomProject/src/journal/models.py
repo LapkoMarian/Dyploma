@@ -73,7 +73,6 @@ class Journal(models.Model):
                 INNER JOIN classroom_classroom classroom on classroom.id = classroom_users.classroom_id
                 WHERE classroom_users.user_id = {student_id};
             """
-            print(sql_query)
             cursor.execute(sql_query)
             results = Journal.dict_fetchall(cursor)
         return results

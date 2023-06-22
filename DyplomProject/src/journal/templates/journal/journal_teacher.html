@@ -4,10 +4,10 @@
 {% block title %}Журнал{% endblock %}
 
 {% block content %}
-<h1>Журнал</h1>
+<h1><b>Журнал:</b> {{ class_name }}</h1>
 
 <form action="" method="get">
-    <label for="start_date">Показати оцінки закінчуючи датою:</label>
+    <label for="start_date">Показати оцінки починаючи з дати:</label>
     <div class="d-inline-block">
         <input type="date" class="form-control" style="width: 200px" id="start_date"  name="start_date" required>
     </div>
@@ -27,16 +27,20 @@
     </tr>
     </thead>
     <tbody>
-    {% for student in students_list %}
+    {% for student in students_list|dictsort:"last_name" %}
     <tr>
-        <td width="20px">{{ forloop.counter }}</td>
-        <td width="200px">{{student.first_name}} {{student.last_name}}</td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{student.last_name}} {{student.first_name}}</td>
         {% for rating in student.rating %}
         <th class="text-center">
             {% if rating.1.0|length > 0 %}
-            {{rating.1.0.rating}}
+                {% if rating.1.0.rating == 0 %}
+                    <span>н/н</span>
+                {% else %}
+                    {{rating.1.0.rating}}
+                {% endif %}
             {% else %}
-            <button type="button" data-toggle="modal" data-target="#gradeModal" class="btn btn-outline-light"
+            <button type="button" data-toggle="modal" data-target="#addgradeModal" class="btn btn-outline-light"
                     onclick="changeRatingForm('{{rating.0}}','{{student.classroom_users_id}}')">
                 <i class="fas fa-plus"></i>
             </button>
@@ -48,12 +52,12 @@
     </tbody>
 </table>
 
-<div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="gradeModalTitle"
+<div class="modal fade" id="addgradeModal" tabindex="-1" role="dialog" aria-labelledby="addgradeModalTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="gradeModalLongTitle">Додати оцінку</h5>
+                <h5 class="modal-title" id="addgradeModalLongTitle">Додати оцінку</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -66,12 +70,11 @@
                         {{ add_grade_form.topik|attr:'class: form-control'|attr:"placeholder:Введіть тему уроку" }}
                     </div>
                     <div class="form-group">
-                        <label for="grade">Оцінка</label>
+                        <label for="rating">Оцінка</label>
                         {{ add_grade_form.rating|attr:'class: form-control' }}
                     </div>
-
-                    {{ add_grade_form.created_at }}
-                    {{ add_grade_form.classroom_user }}
+                        {{ add_grade_form.created_at }}
+                        {{ add_grade_form.classroom_user }}
                 </div>
 
                 <div class="modal-footer">
@@ -83,12 +86,11 @@
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
 function changeRatingForm(created_at, classroom_user) {
     console.log(created_at, classroom_user);
     document.getElementById("id_created_at").value = created_at;
     document.getElementById("id_classroom_user").value = classroom_user;
 }
 </script>
-
 {% endblock %}

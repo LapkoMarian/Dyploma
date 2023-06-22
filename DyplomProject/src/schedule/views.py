@@ -12,13 +12,16 @@ def view_schedule(request):
         students_form = StudentsForm.objects.get(user=request.user)
         schedules = Schedule.objects.filter(class_name=students_form.form).all()
         forms = Form.objects.filter(class_name=students_form.form).all()
+        replacements = Schedule.objects.filter(class_name=students_form.form, replacement__isnull=False)
     elif request.user.profile.is_teacher():
         schedules = Schedule.objects.filter(teacher=request.user).all()
+        replacements = Schedule.objects.filter(teacher=request.user, replacement__isnull=False)
     weekdays = Weekday.objects.all()
     calls = Call.objects.all()
 
     context = {
         'schedules': schedules,
+        'replacements': replacements,
         'weekdays': weekdays,
         'forms': forms,
         'calls': calls,

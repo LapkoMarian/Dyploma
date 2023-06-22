@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -160,6 +162,8 @@ def assignment_submit(request, pk):
         files = request.FILES.getlist('file_field')
         for f in files:
             AssignmentFile.objects.create(submitted_assignment = submitted_assignment,files=f)
+        submitted_assignment.turned_in = True
+        submitted_assignment.save()
         messages.success(request, f'Завдання успішно подано на перевірку!')
     
     form = AssignmentFileForm()
@@ -290,7 +294,8 @@ def todo(request):
     for assignment in assignments:
         if not assignment.is_turnedin(request.user):
             filtered_assignment.append(assignment)
-    context = {'assignments': filtered_assignment}
+    current_date = timezone.now()
+    context = {'assignments': filtered_assignment, 'current_date': current_date}
     
     return render(request, 'classroom/todo.html', context)
 

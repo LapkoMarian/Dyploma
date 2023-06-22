@@ -18,7 +18,6 @@
     <thead>
     <tr>
         <th>Назва предмету</th>
-        <th>Код</th>
         <th>Дата створення</th>
     </tr>
     </thead>
@@ -26,7 +25,6 @@
     {% for item in list_classroom %}
     <tr>
         <td><b><a href="{{item.classroom_id}}">{{item.name}}</a></b></td>
-        <td>{{item.classroom_code}}</td>
         <td>{{item.created_at}}</td>
     </tr>
     {% endfor %}

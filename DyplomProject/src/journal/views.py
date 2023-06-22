@@ -1,14 +1,13 @@
 import datetime
+import locale
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from classroom.models import Classroom
 from .models import Journal
 from .forms import AddGradeForm
-
-
-# Create your views here.
 
 
 @login_required
@@ -29,23 +28,29 @@ def view_journal(request, classroom_id: int):
     if request.user.profile.is_teacher():
         start_date = str(request.GET.get("start_date", datetime.date.today()))
         start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
-        date_list = [start_date - datetime.timedelta(days=x) for x in range(5)]
+        date_list = []
+
+        for x in range(7):
+            date = start_date + datetime.timedelta(days=x)
+            if date.weekday() < 5:
+                date_list.append(date)
+
         students_list = Journal.get_list_students_in_classroom(classroom_id=classroom_id)
 
         for student in students_list:
             date_rating = []
-            print(student)
             for d in date_list:
                 date_rating.append(
                     (str(d), Journal.get_rating_date(str(d), student["user_id"], classroom_id))
                 )
             student['rating'] = date_rating
-
         add_grade_form = AddGradeForm()
+        classroom = get_object_or_404(Classroom, id=classroom_id)
+        class_name = classroom.name
         return render(
             request=request,
             template_name='journal/journal_teacher.html',
-            context={'students_list': students_list, 'add_grade_form': add_grade_form}
+            context={'students_list': students_list, 'add_grade_form': add_grade_form, 'class_name': class_name}
         )
     else:
         rating = Journal.get_student_rating(
@@ -63,9 +68,7 @@ def view_journal(request, classroom_id: int):
 @login_required
 def add_grade(request):
     if request.method == 'POST':
-        
         form = AddGradeForm(request.POST)
-
         if form.is_valid():
             topik = form.cleaned_data.get('topik')
             rating = form.cleaned_data.get('rating')
@@ -86,20 +89,5 @@ def add_grade(request):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-# def create_classroom(request):
-#     if request.method == 'POST':
-#         form = ClassroomCreationForm(request.POST)
-#         if form.is_valid():
-#             name = form.cleaned_data.get('name')
-#             description = form.cleaned_data.get('description')
-#             classroom = Classroom(name=name, description=description, created_by=request.user,
-#                                   classroom_code=Classroom.generate_code())
-#             classroom.save()
-#             topic = Topic(name='General', classroom=classroom)
-#             topic.save()
-#             classroom_teachers = ClassroomTeachers(classroom=classroom, teacher=request.user)
-#             classroom_teachers.save()
-#             messages.success(request, f'Classroom {name} created !')
-#         else:
-#             messages.warning(request, f'Classroom Could not be created :(')
-#     return redirect('classroom:home')
+
+

@@ -26,6 +26,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
+                        {% if request.user.profile.is_teacher %}
                         <div class="col-12 mb-2">
                             <div id="clicked-post" class="card shadow-sm">
                                 <div class="card-body">
@@ -59,6 +60,7 @@
                             </div>
                             <!-- END TEXT AREA -->
                         </div>
+                        {% endif %}
 
                         <!-- END COL -->
                         <!-- COL -->
@@ -115,14 +117,14 @@
                                                     <div class="card mb-3 ml-2">
                                                         <div class="row no-gutters">
                                                             <div class="col-md-4">
-                                                                <img src="{% static 'mainapp/img/file.png' %}"
+                                                                <img src="{% static 'mainapp/img/file1.png' %}"
                                                                      class="card-img img-fluid d-none d-lg-block my-md-2"
                                                                      alt="...">
                                                             </div>
                                                             <div class="col-md-8">
                                                                 <div class="card-body">
                                                                     <h5 class="card-title "><a target="_blank"
-                                                                                               href="{{ resource.files.url }}">{{ resource.filename }}...</a>
+                                                                                               href="{{ resource.files.url }}">{{ resource.filename|truncatechars:12 }}</a>
                                                                     </h5>
                                                                 </div>
                                                             </div>

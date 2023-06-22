@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for item in rating %}
+    {% for item in rating|dictsort:"created_at" %}
     <tr>
         <td>{{item.topik}}</td>
         <td>{{item.created_at}}</td>

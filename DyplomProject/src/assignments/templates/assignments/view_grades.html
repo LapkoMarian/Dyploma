@@ -13,35 +13,20 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
             <tr>
-                <th>Username</th>
-                <th>
-                        Out Of {{ assignment.marks }}
-                        <a class="btn btn-circle float-right" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>
-                        </a>			
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </div>
-                </th>
-                <th>
-                    View
-                </th>
+                <th>Прізвище Ім'я</th>
+                <th>Оцінка</th>
             </tr>
             </thead>
 
             <tbody>
                 {% for submitted_assignment in submitted_assignments %}
                 <tr>
-                    <td>{{ submitted_assignment.user.username }}</td>
+                    <td>{{ submitted_assignment.user.last_name }} {{ submitted_assignment.user.first_name }}</td>
                     <td>
                         {% if submitted_assignment.is_reviewed %}
                             {{ submitted_assignment.grade }}
-                        {% else %}
-                            Ungraded
                         {% endif %}
                         </td>
-                    <td><a class="stretched-link" href="{% url 'assignments:grade' submitted_assignment.pk %}">View</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

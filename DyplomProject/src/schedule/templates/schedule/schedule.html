@@ -27,7 +27,14 @@
                                 {% for schedule in schedules %}
                                     {% if schedule.days == weekday %}
                                         {% if schedule.number_lesson == call %}
-                                <span>{{ schedule.name_lesson }} <p><br><strong>Клас:</strong> {{ schedule.class_name }}</span>
+                                            {% if schedule.number_lesson == call %}
+                                                {% if schedule.replacement %}
+                                                    <span class="text-info text-lg"><strong>Заміна:</strong><br>{{ schedule.replacement.name_lesson }} <p><br>
+                                                        <strong>Вчитель:</strong><br> {{ schedule.replacement.teacher }} </span>
+                                                {% else %}
+                                                    <span>{{ schedule.name_lesson }} <p><br><strong>Клас:</strong> {{ schedule.class_name }}</span>
+                                                {% endif %}
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -58,7 +65,13 @@
                                 {% for schedule in schedules %}
                                     {% if schedule.days == weekday %}
                                         {% if schedule.number_lesson == call %}
-                                <span>{{ schedule.name_lesson }} <p><br><strong>Вчитель:</strong> {{ schedule.teacher.first_name }} {{ schedule.teacher.last_name }}</span>
+                                            {% if schedule.replacement %}
+                                                <span class="text-info text-lg"><strong>Заміна:</strong><br>{{ schedule.replacement.name_lesson }} <p><br>
+                                                    <strong>Вчитель:</strong> {{ schedule.replacement.teacher }} </span>
+                                            {% else %}
+                                                <span>{{ schedule.name_lesson }} <p><br><strong>Вчитель:</strong>
+                                                    {{ schedule.teacher.first_name }} {{ schedule.teacher.last_name }}</span>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
